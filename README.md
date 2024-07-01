@@ -1,707 +1,830 @@
+Resources: 
 Installation: https://blog.logrocket.com/linting-typescript-eslint-prettier
 GitHub Link: https://github.com/Apollo-Level2-Web-Dev/Level2-Batch-3-PH-university-server/tree/mastering-mongoose
 
-In short cut : I never recommended to do that , think of this is a hole to lost yourself , rather suffer pain and sufferings and div dive from the documentation ocean.
-
- 
-If we face any issue regarding this clone this from github → https://github.com/Shafayathub/NoSQL-Backend-Template 
-
-Just go to a folder and clone the template code
-Run  →npm i
-
-Npm i will install the node modules that we will having
-
-Run → npm run lint
-
-Lint will use to detect the error , and if any error occurred run 
-
-→ npm run lint:fix
-
-Run → npm run prettier
-
-Prettier will format the code
-
-Run → npm run prettier:fix
-
-This command will fix the code 
-
-Add a .env file in the root and  make two variables
-DB_URL= “”
-PORT= 
-
-Why we have used this unethical motherfucker template code ?
-Because the course is flowing and I am finding bugs setting up the eslint and prettier 
-If eslint is finding any issues then create a file named 
-
-.eslint.config.mjs →
-
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
+Index:
 
 
-export default [
-  { languageOptions: { globals: globals.node } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  {
-    ignores: ["node_modules", "dist", ".src/config"],
-    rules: {
-      "no-unused-vars": "error",
-      "no-undef": "error",
-    },
+3-5 Software Design Pattern , Mvc Vs Modular, Create An Interface
+
+https://web.programming-hero.com/l2-b1-b2-mission-success/video/l2-b1-b2-mission-success-8-5-software-design-pattern-mvc-vs-modular-create-an-interface 
+
+MVC - modular , view , controller
+And Modular pattarn
+
+In MVC there are three main folders
+
+Moduler
+View
+Controller
+Routes
+Interfaces
+
+→ File namings
+
+Controllers : 
+students.controller.ts
+admin.controller.ts
+faculty.controller.ts
+
+Views:
+→ Template engine:
+ejs
+handlerbars
+Pugs
+
+→ Library / Frameworks
+React
+Vue
+Angular
+
+Models:
+students.models.ts
+admin.models.ts
+faculty.models.ts
+
+Routes: 
+students.routes.ts
+admin.routes.ts
+faculty.routes.ts
+
+Interfaces: 
+
+students.interface.ts
+admin.interface.ts
+faculty.interface.ts
+
+But in this process there is a problem , if i want to work in students we have to go in students models interfaces and all that is a hazard process. Also a senior developer is working in a codebase that a junior is also working in. 
+
+
+So there comes a modular pattern: 
+
+Students: 
+students.controller.ts
+students.models.ts
+students.routes.ts
+students.interface.ts
+student.services.ts
+
+
+Admin: 
+admin.controller.ts
+admin.models.ts
+admin.routes.ts
+admin.interface.ts
+admin.services.ts
+
+So we add all this 4 mvc of any user into one folder
+
+
+Benefits of using modular pattern:
+Scalability
+Refactor
+Maintainablity
+
+Rules / Principles: 
+
+DRY - Don’t repeat yourself
+Fat model = we will make the model fat
+Thin controller =  we will make the controller clean
+
+In javascript if we go step by step in mongoose the steps we need to follow
+Schema : first we need to create schema
+Model : 2nd we need to create model
+dbQuery: 3rd we need to create dbQuery
+So if we are using typescript the flow is
+Interface → 1st
+Model → 2nd
+Routes → 3rd
+dbQuery → 4th
+
+
+
+
+
+Now lets start the project:
+
+Inside /src/app → we create a folder name modules
+
+Inside modules we create a folder name students.
+So the path is /src/app/modules/students
+Inside students we have to create 4 files.
+students.controller.ts
+students.model.ts
+students.routes.ts
+students.interface.ts
+
+Step 1 —-> Now first we have to work in students.interface.ts
+
+Students.interface.ts 
+
+First thing we go to mongoose typescript documentation → https://mongoosejs.com/docs/typescript.html 
+
+https://github.com/Apollo-Level2-Web-Dev/Level2-Batch-3-PH-university-server/blob/mastering-mongoose/src/app/modules/student/student.interface.ts 
+
+To get started with Mongoose in TypeScript, you need to:
+Create an interface representing a document in MongoDB.
+Create a Schema corresponding to the document interface.
+Create a Model.
+Connect to MongoDB.
+Importing schema , model , connect from mongoose
+import { Schema, model, connect } from 'mongoose';
+
+
+
+Now we have to copy paste the interface code from the documentation inside student.interfaces.ts: 
+
+interface Students {
+  name: string;
+  email: string;
+  avatar?: string;
+}
+Change the name of the interfaces IUser to students
+We want to export the interface like that and give a “= “ after Students
+
+export type Students =  {
+  name: string;
+  email: string;
+  avatar?: string;
+}
+We are using type instate of interface , 
+The name would be in three part
+Name: {
+firstName: string,
+middleName: string,
+lastName : string
+}
+
+We add id and gender 
+id: string,
+gender: “male” | “Female”
+
+| ⇒ in typescript the or operator is | 
+Type literals: When we are sure about the type either male or female 
+
+We  have to add email, contactNumber , emergencyContactNo , bloodGroup ? (optional), presentAddress(string), parmanentAddress(string), 
+
+
+The Student.interface.ts → looks like that
+
+export type UserName = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+};
+
+export type Guardian = {
+  fatherName: string;
+  fatherOccupation: string;
+  fatherContactNo: string;
+  motherName: string;
+  motherOccupation: string;
+  motherContactNo: string;
+};
+
+export type LocalGuardian = {
+  name: string;
+  occupation: string;
+  contactNo: string;
+  address: string;
+};
+
+export type Student = {
+  id: string;
+  name: UserName;
+  gender: 'male' | 'female';
+  dateOfBirth?: string;
+  email: string;
+  contactNo: string;
+  emergencyContactNo: string;
+  bloogGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+  presentAddress: string;
+  permanentAddres: string;
+  guardian: Guardian;
+  localGuardian: LocalGuardian;
+  profileImg?: string;
+  isActive: 'active' | 'blocked';
+};
+
+
+
+For different types of blood group go to chatgpt → 
+https://chatgpt.com/ 
+Search = give me different union types of blood group
+
+
+Again search typescript string literal types. We can use this to define the blood group types
+
+Student.model.ts
+
+2) Step 2 → Student.model.ts
+
+Now inside /src/app/modules/student → create another file name 
+student.model.ts
+
+https://github.com/Apollo-Level2-Web-Dev/Level2-Batch-3-PH-university-server/blob/mastering-mongoose/src/app/modules/student/student.model.ts 
+
+Go to the documentation → https://mongoosejs.com/docs/typescript.html and from example make the schema 
+
+If you want you can fo to the documentation to know the schema types → https://mongoosejs.com/docs/schematypes.html 
+
+Now we have to import in student.model.ts→ 
+import { Schema, model, connect } from 'mongoose';
+
+Now we have to create a new schema for student  and give its data type student and import student from student.interface.ts
+
+
+import Student from ‘./student/student.interface’
+
+const studentSchema = new Schema<Student>({})
+
+Now first we have t give studentschema a id 
+const studentSchema = new Schema<Student>({
+	id: { type: String }
+})
+
+In schema we will use type String ⇒ Capital letter string and in interfaces we will use string in small letter
+
+Now same way we can add name 
+
+const studentSchema = new Schema<Student>({
+	id: { type: String },
+	firstName: {
+   		 type: String,
+   		 required: true,
+ 	 },
+  middleName: {
+    	type: String,
   },
-];
+  lastName: {
+    	type: String,
+    	required: true,
+  },
 
-
-
-
-Paste the code there and some changes with lint script  and prettier.
-
-    "lint": "npx eslint .",
-    "lint:fix": "npx eslint . --fix",
-      "prettier": "prettier --ignore-path .gitignore --write \"./src**/*.+(js|ts|json)\"",
-    "prettier:fix": "npx prettier . --write",
-
-
-
-
-
-
-
-
-Add dev dependencies this package.json file
-
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
-    "typescript-eslint": "^7.9.0"
-
-
-
-
-Index
-
-Express
-Mongoose 
-Typescript
-Dotenv
-Cors
-Software design pattern (MVC - Modular view controller)
-Interfaces to design object structures
-Creating a schema for a student
-Creating route, services and controllers 
-Refactor existing schema
-
-Mongoose: Mongoose is a powerful ODM (Object data modelling) library.
-
-Why we need mongoose ? In mongodb we can send different structural data in one document because mongodb is a no sql database and it will not mind if we give different types of data. 
-
-Example : lets say I am going to the cantonment and the army checks me first , so the mongoose is the army which will validate the data.
-
-Many methods of mongoose and mongodb are the same because mongoose is the upper layer  of mongodb . 
-
-
-
-Why we use mongoose?
-Schema creating
-Model creation
-Data validation
-Querying
-Middleware support
-Population
-
-
-3-2 Installing Express , Mongoose, Typescript, Dotenv ,Cors
-
-https://web.programming-hero.com/l2-b1-b2-mission-success/video/l2-b1-b2-mission-success-8-2-installing-express-mongoose-typescript-dotenv-cors 
-
-Make a folder name first project → with cmd open the project
-
-1) npm init -y  ⇒ initializing first project
-
-Installing Express , mongoose and typescript
-
-Express: go to the express website → https://expressjs.com/en/starter/installing.html 
-
-Run the command → npm install express
-
-Mongoose: Go to mongoose documentation → https://mongoosejs.com/docs/ 
-
-Run the command → npm install mongoose –save
-
-Typescript: Go to the typescript documentation and install it
-
-https://www.typescriptlang.org/download/ 
-Run the command → npm install typescript --save-dev
-
-Cors : we need to install cors on the project 
-
-Go to the documentations → https://www.npmjs.com/package/cors 
-
-Run the command → npm install cors
-
-Dotenv: we need to save the sensitive data stored in environment variable
-Go to the documentation → https://www.npmjs.com/package/dotenv 
-
-Run the command → npm install dotenv
-
-
-Now we need to initialize a typescript json configuration file , 
-
-Run the command → tsc -init
-
-That will generate a tsconfig.json file. Now go to the tsconfig.json and press cntr+F → rootdir , outdir
-
-“rootDir” : “./src”
-“outDir” : “./dist”
-
-
-
-Go to the express.js , helloworld example → https://expressjs.com/en/starter/hello-world.html 
-
-
-
-Now in the root create a folder called → src 
-inside /src → create a file app.ts
-
-
-And copy and paste the template to app.ts
-
-
-const express = require('express')
-const app = express()
-const port = 3000
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
 })
 
-We need to configure our application so that our all ts files can change to the js file
+Here required: true means the field is a required field. 
+Now we can add gender
 
 
-So we have to go to the package.json → add a command to the script 
-
-“scripts”:{
-build: “tsc”,
-}
-
-Now run and test the command build using
-
-npm run build
-
-
-After running this command we can see a app.js file inside dist folder
-
-Now run the code using 
-
-node ./dist/app.js 
-
-Now terminate the command using cntr+c
-
-But we will not open our server like that , so what will we do ?
-In src we will create a file called server.ts and cut and paste the line → app.listen from the app.js and paste it into server.ts
-
-/src/server.ts
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+const studentSchema = new Schema<Student>({
+	id: { type: String },
+	firstName: {
+   		 type: String,
+   		 required: true,
+ 	 },
+  middleName: {
+    	type: String,
+  },
+  lastName: {
+    	type: String,
+    	required: true,
+  },
+ gender: ['male', 'female'],	
 })
 
-Server.ts : Server.ts is the file where we make all the connectivity with server to other files.
+Here in gender we have given male and female inside an array . This type is called enum, Enum means we can use either one value from this two. 
 
-Go to the mongoose documentation → https://mongoosejs.com/docs/ 
+In this same way we have to add blood group , presentAddress, parmanetAddress, guardian, localGardian, profileImg, isActive
 
-And copy and paste the lines from the mongoose template to server.ts before app.listen is written→ 
+If any error is given please check the interface if you have named the interface correctly
 
-const mongoose = require('mongoose');
-async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/test');
+Now change some of the type like name and others type separately
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
-So now the server.ts will look like this
+So now the student.model.ts will look like this
+Student.model.ts → 
 
-const mongoose = require('mongoose');
-async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/test');
+import { Schema, model } from 'mongoose';
+import {
+  Guardian,
+  LocalGuardian,
+  Student,
+  UserName,
+} from './student/student.interface';
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const userNameSchema = new Schema<UserName>({
+  firstName: {
+    type: String,
+    required: true,
+  },
+  middleName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+});
 
-Now inside the 
-async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/test');
+const guardianSchema = new Schema<Guardian>({
+  fatherName: {
+    type: String,
+    required: true,
+  },
+  fatherOccupation: {
+    type: String,
+    required: true,
+  },
+  fatherContactNo: {
+    type: String,
+    required: true,
+  },
+  motherName: {
+    type: String,
+    required: true,
+  },
+  motherOccupation: {
+    type: String,
+    required: true,
+  },
+  motherContactNo: {
+    type: String,
+    required: true,
+  },
+});
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
-Function we need to connect the mongodb atlas connection with the application. 
-GO to the mongodb atlas https://cloud.mongodb.com/v2/64573d539de82c7252509290#/overview 
-Click on connect → Drivers → copy the connecting URLs
-mongodb+srv://<username>:<password>@cluster0.zycuvps.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+const localGuradianSchema = new Schema<LocalGuardian>({
+  name: {
+    type: String,
+    required: true,
+  },
+  occupation: {
+    type: String,
+    required: true,
+  },
+  contactNo: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+});
 
-Now this is a sensitive data so we have to use the environment variable
-So create a .env named file in the root and paste the url DATABASE_URL=mongodb+srv://<username>:<password>@cluster0.zycuvps.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-PORT = 5000
-We have to create a new user to the mongodb atlas database. So go to database access → https://cloud.mongodb.com/v2/64573d539de82c7252509290#/security/database/users 
+const studentSchema = new Schema<Student>({
+  id: { type: String },
+  name: userNameSchema,
+  gender: ['male', 'female'],
+  dateOfBirth: { type: String },
+  email: { type: String, required: true },
+  contactNo: { type: String, required: true },
+  emergencyContactNo: { type: String, required: true },
+  bloogGroup: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+  presentAddress: { type: String, required: true },
+  permanentAddres: { type: String, required: true },
+  guardian: guardianSchema,
+  localGuardian: localGuradianSchema,
+  profileImg: { type: String },
+  isActive: ['active', 'blocked'],
+});
 
-Give user a new userName and password . change the role to atlas admin. Click on add user. 
+export const StudentModel = model<Student>('Student', studentSchema);
 
-→ Now in .env, DATABASE_URL→ add the username and password ⇒ mongodb+srv://<username>:<password>@cluster0.zycuvps.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-Add a new Database name inside the link like that 
-→ mongodb+srv://<username>:<password>@cluster0.zycuvps.mongodb.net/first-project?retryWrites=true&w=majority&appName=Cluster0 
 
-In the server.ts use the link to connect to the mongodb atlas like → process.env.DATABASE_URL
 
-Now the server.ts will look like that →
-const mongoose = require('mongoose');
-require('dotenv').config()
-async function main() {
-  await mongoose.connect(process.env.DATABASE_URL);
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+Now the last line 
+export const StudentModel = model<Student>('Student', studentSchema);
+Go to the documentation → https://mongoosejs.com/docs/typescript.html 
 
-Error : we got a error Cannot find name 'require' Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.ts(2580)
+And look to create a new model we have to give 
+const modelName = model<interface_name>(‘Database collection name’, Schema name that defined before)
 
-Solution: we have to run and save a command →
-npm i --save-dev @types/node 
+What is schema? ⇒ schema makes a new instance
 
-Now the process.env each time writing to be a hazard so we have to do this in some systemic way like that →
-Inside src we will create a folder name → app
-Inside app we will create another folder name config → inside config folder we will create a file name index.ts
-/src/app/config/index.ts
 
-Index we are using to config the .env . So inside index.ts 
-import dotenv from “dotenv”
-import path form ‘path’
+Since we have done interfaces we needed some other files like
 
-dotenv.config({path : path.join((process.cwd(), ‘.env’))})
-export default{
-port: process.env.PORT,
-database_url: process.env.DATABASE_URL
-}
-3-3 Installing Eslint, Refactor Code, Fix Errors Using Command
+Controllers, services, routes 
 
-https://web.programming-hero.com/l2-b1-b2-mission-success/video/l2-b1-b2-mission-success-8-3-installing-eslint-refactor-code-fix-errors-using-command 
 
-Now since we have configured the config file so inside server.ts we have to replace all process.env to config. And import config from the required path 
-Import config from “./app/config”
-Now the server.ts will look like that →
-const mongoose = require('mongoose');
-import config from “./app/config”
-async function main() {
-  await mongoose.connect(config.database_url);
+Data flow: 
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
-app.listen(config.port, () => {
-  console.log(`Example app listening on port ${config.port}`)
-})
+Client → route → controller → service → controller → client 
 
-Now we can replace require from app.ts to import module, so the app.ts will look like this →
-import express from 'express'
-const app = express()
-const port = 3000
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
-Error: After changing the require to import an error will occurred says → can’t find a declaration file for module 'express'.
-Solution: typescript don’t do type in that way so we have to run a command
-→ npm i –save-dev @types/express 
-Now we have to give the types of request and response for typescript that comes directly from the express 
-Now the app.ts looks like that → 
-import express, { Request, Response } from 'express'
-const app = express()
-const port = 3000
+Client will hit route first → route hit controller → controller hit services → services will having all business logic and it will query into database → in response it will return the data in controller → the controller will get back to the client
 
-app.get('/', (req : Request , res : Response) => {
-  res.send('Hello World!')
-})
+Service will handle business logic : means service will query in model. 
 
-In server.ts we can change the require syntax to import
-There could be an error that in server.ts → config.database_url types not defined, since we have imported it from .env file and we are sure about its types we can give string surely.
+From controller to client it will return 3 response
 
-And we cut paste the app.listen function into the main() function.
-Now the server.ts will look like that →
-We have to change the DATABASE_URL to database_url since we are taking it from config file
+Success
+Message
+Data
 
-const mongoose = require('mongoose');
-async function main() {
-  await mongoose.connect(config.database_url as string);
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+Student.route.ts: 
+3-8 Create Route , Service And Controller
+https://web.programming-hero.com/l2-b1-b2-mission-success/video/l2-b1-b2-mission-success-8-8-create-route-service-and-controller 
 
-app.listen(config.port, () => {
-  console.log(`Example app listening on port ${config.port}`)
-})
-}
-Now the app doesn’t exists in server.ts file its existes in app.ts so we have to export app from app.ts and import app in server.ts
+https://github.com/Apollo-Level2-Web-Dev/Level2-Batch-3-PH-university-server/blob/mastering-mongoose/src/app/modules/student/student.route.ts 
 
-Now app.ts looks like that: →
-import express, { Request, Response } from 'express'
-const app = express()
-const port = 3000
+Now inside /src/app/modules/student → we will create another file named Student.route.ts
 
-app.get('/', (req : Request , res : Response) => {
-  res.send('Hello World!')
-})
+import express from ‘express’
+const router = express.Router()
 
-export default app;
+Now Router is function inside express. Now we create a POST method in router
 
-Server.ts looks like that →
-import app from “./app”
-const mongoose = require('mongoose');
-import config from ‘./app/config’
-async function main() {
-  await mongoose.connect(config.database_url as string);
+router.post(‘/create-student’, )
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+Now if client hit this route /create-student we have to pass the hit from router to controller. So we need another file Student.controller.ts inside student
 
-app.listen(config.port, () => {
-  console.log(`Example app listening on port ${config.port}`)
-})
+Student.controller.ts
+https://github.com/Apollo-Level2-Web-Dev/Level2-Batch-3-PH-university-server/blob/mastering-mongoose/src/app/modules/student/student.controller.ts 
+
+Inside controller we have to create a function name createStudent which will work like the middle man between router and service while it takes req from router
+
+import express, {Request, Response} from ‘express’
+const createStudent = (req: Request, res: Response) ⇒{ }
+
+
+Now the createStudent will handle the req, res , and pass it to the services, lets say a client hit the route 
+/create-student
+
+And the route pass the data from router to controller , so the controller will receive the data from → req.body
+
+import express, {Request, Response} from ‘express’
+const createStudent = (req: Request, res: Response) ⇒{
+	const student = req.body;
+ }
+
+Now the create student pass the data from controller to service where all business logic will be handled, so we need a file like → 
+student.service.ts
+
+
+Student.service.ts
+https://github.com/Apollo-Level2-Web-Dev/Level2-Batch-3-PH-university-server/blob/mastering-mongoose/src/app/modules/student/student.service.ts 
+
+Inside student.service.ts we have to create a new function called “createStudentInDb” that will receive data student and the student data’s type is Student from Student.interface.ts → This has to be async await function
+
+
+import {Student} from “student.interface”
+
+const createStudentInDb = (student : Student) ⇒{
+
 }
 
 
-Try Catch: still there is a problem in server.ts
-There could be an error and if that happens our server will be crushed so we have to use a try catch block inside the main() function
+Now we need to run db query from student model like this and we can change the function into a async await function and return a result
 
-Server.ts looks like that →
-import app from “./app”
-const mongoose = require('mongoose');
-async function main() {
-try{
- await mongoose.connect(config.database_url as string);
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+import {Student} from “student.interface”
+import {StudentModel} from “student.model”
 
-app.listen(config.port, () => {
-  console.log(`Example app listening on port ${config.port}`)
-})
-
+const createStudentInDb =async (student : Student) ⇒{
+	const result = await StudentModel.create(student);
+	return result;
 }
-catch(err)
+
+
+Now create is a mongoose method → https://mongoosejs.com/docs/api/model.html#Model.create() 
+That is used to save a new data in mongodb, method syntex
+
+modelName.create(data)
+Now we need to export the function because we are going to import it in router, so lets make a export like this
+
+
+export const StudentService = {
+	cretaeStudentInDb,
+}
+
+
+Now student.service.ts → 
+
+import {Student} from “student.interface”
+import {StudentModel} from “student.model”
+
+const createStudentInDb =async (student : Student) ⇒{
+	const result = await StudentModel.create(student);
+	return result;
+}
+
+export const StudentService = {
+	cretaeStudentInDb,
+}
+
+
+Now go back to student.controller.ts → 
+
+Student.controller.ts
+import express, {Request, Response} from ‘express’
+const createStudent = (req: Request, res: Response) ⇒{
+	const student = req.body;
+ }
+
+
+Now we make the normal function into a async , await function and import the student services like this →
+
+import express, {Request, Response} from ‘express’
+import {StudentServices} from “./student.service”
+const createStudent =async (req: Request, res: Response) ⇒{
+	const student = req.body;
+	const result = await StudentServices.createStudentInDB(student);
+ }
+
+
+Now if the data flows correctly the function will response a data
+Like that → 
+
+ res.status(200).json({
+      success: true,
+      message: 'Student is created succesfully',
+      data: result,
+    });
+
+We can also use a try catch block so that the error can be thrown if any occurs.
+Student.controller.ts→
+
+const createStudent = async (req: Request, res: Response) => {
+  try {
+    const { student: studentData } = req.body;
+    const result = await StudentServices.createStudentIntoDB(studentData);
+
+    res.status(200).json({
+      success: true,
+      message: 'Student is created successfully',
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+export const studentController = {
+createStudent
+}
+
+
+Now we can send studentController.createStudent into routes
+
+Get back to routes →
+
+import { StudentControllers } from './student.controller';
+
+router.post('/create-student', StudentControllers.createStudent);
+
+
+
+3-9 Insert A Student Data Into MongoDB
+https://web.programming-hero.com/l2-b1-b2-mission-success/video/l2-b1-b2-mission-success-8-9-insert-a-student-data-into-mongodb 
+
+Now get back to the Student.routes.ts and export the router 
+
+export const StudentRoutes = router;
+
+So the router will looks like this ⇒
+
+
+
+import express from 'express';
+import { StudentControllers } from './student.controller';
+
+const router = express.Router();
+
+router.post('/create-student', StudentControllers.createStudent);
+
+export const StudentRoutes = router;
+
+
+Now the app.ts doesn’t know that there is a routes so inside app.ts we need to bring the routes, 
+Get back to the app.ts , import the studentsRoutes
+
+app.ts →
+import StudentRoutes from ‘./student/Student.route’
+
+app.use('/api/v1/students', StudentRoutes);
+
+Here /api → its a api
+/v1 → version 1
+/students → students 
+
+
+Now if any client hit the route → /api/v1/students/create-student that will create a student data , So lets test the api
+
+Chatgpt to create a json data for student model
+
+Now copy all the data from student.model.ts (cntr+A , cntr+c)
+Go to chatgpt →
+
+And paste the data and write → “This is my model , please make a json data by following this model”
+
+It will give us a fake data.
+
+
+Postman for api testing:
+
+https://www.postman.com/downloads/ → Download and install postman
+
+Create a new collection , give a collection name (ex. first-project)
+
+Add request → 
+Give request a new name → create a student
+
+Now we will test and send the request(the data that has copied from chatgpt) but we will not send the request directly rather we will send the data into a object named student
+
 {
-	console.log(err);
-} 
+	student: {
+// The data that copied from the chatgp
+     }
 }
 
-Parsers: 
-We have to use perser to perse the json and cors
-Inside app.ts→
-app.use(express.json())
-app.use(cors())
+Error: I am find a response error from postman , 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot POST /api/v1/students/create-student</pre>
+</body>
+</html>
 
-If can’t find cors shown import cors from ‘cors’
+Lets restart the server and take a look whats wrong, No this error occurs because I haven’t  done the previous stages 
 
-Now when you want to import cors the typescript will give an error that cors need a typescript declaration file
-So run the command → npm i –save-dev @types/cors  
+So I have encountered so different types of error and finally I have been successfully entered / created a student on postman ⇒
 
-Now in this part either you can fix it or follow the process
-
-create a file named 
-
-.eslint.config.mjs →
-
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-
-
-export default [
-  { languageOptions: { globals: globals.node } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  {
-    ignores: ["node_modules", "dist", ".src/config"],
-    rules: {
-      "no-unused-vars": "error",
-      "no-undef": "error",
-    },
-  },
-];
-
-
-
-
-Paste the code there and some changes with lint script  and prettier.
-
-    "lint": "npx eslint .",
-    "lint:fix": "npx eslint . --fix",
-      "prettier": "prettier --ignore-path .gitignore --write \"./src**/*.+(js|ts|json)\"",
-    "prettier:fix": "npx prettier . --write",
-
-
-
-
-
-
-
-
-Add dev dependencies this package.json file
-
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
-    "typescript-eslint": "^7.9.0"
-
-
-
-
-First copy and paste the dev dependencies in package.json and run the command → npm i
-
-create a file named   .eslint.config.mjs     →and copy and paste the upper code
-
-
-
-So to setup the projects we need 2 packages eslint and prettier
-Eslint : Es lint doest the works
-Code format
-Find errors
-Code quality check
-Prettier : Helps to format the code
-
-To setup the typescript eslint prettier setup we need to go to google and search → typescript eslint prettier setup and we can find a blog
-The documentation → https://blog.logrocket.com/linting-typescript-eslint-prettier/ 
-
-Now we have to change some code in tsconfig.json 
-"include": ["src"], // which files to compile
-"exclude": ["node_modules"], // which files to skip
-“compilerOptions” :{
-// code 
-}
-We have to add this two lines before the compiler options
-
-ESLint : 
-
-
-From the blog we have to install eslint to the project , run the command → 
-npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
-
-Now we need a eslint config file so we have to run the command → 
-npx eslint --init 
-npm init @eslint/config
-Any of them will work
-After running this command the project will ask some questions  
-Syntex check problem find = yes
-Module = import / export
-Which framework does your project use? - none of this
-Does your project use TypeScript? = yes
-Where does your code run? = Node
-Would you like to install them now? = Yes
-Which package manager do you want to use? = npm
-After installation it will give us a file named eslint.rc
-From the new version of .eslintrc.json we 
-
-In this eslint.rc file add rules 
-"rules": {
-    "@typescript-eslint/no-unused-vars": "error",
-    // to enforce using type for object type definitions, can be type or interface 
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"], 
-  },
-If this process does not work eslint has got some updated version. Keep going on
-No unused vars refers to the non used vars doesn’t give the error
-Now some files doesn’t need to be lintin so make a file name .eslintignore in the root directory and inside
-
-.eslintignore → add two lines
-node_modules
-dist
-We have to use a script to lintin files add a script to the package.json
-"scripts": {
-    "lint": "eslint src --ignore-path .eslintignore --ext .ts"
-   },
-We have add src and removed .js from lint script that refers that inside src lint every .ts file
-
-When we run the script npm run lint the lint is finding the bugs.
-Run it
-
-I am geeting a error : 
-Invalid option '--ignore-path' - perhaps you meant '--ignore-pattern'?You're using eslint.config.js, some command line flags are no longer available. Please see https://eslint.org/docs/latest/use/command-line-interface for details.
-x0d\x0a$ 
-Lets paste it in google and see whats wrong
-https://eslint.org/docs/latest/use/configure/ignore 
-Following this blog I have add this ignores config in eslint.config.mjs
-export default [
-    {
-        ignores: [".config/*"]
+{
+    "student": {
+        "id": "STU001",
+        "name": {
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "gender": "male",
+        "dateOfBirth": "2000-01-01",
+        "email": "john.doe@example.com",
+        "contactNo": "1234567890",
+        "emergencyContactNo": "9876543210",
+        "bloodGroup": "A+",
+        "presentAddress": "123 Main St, Anytown",
+        "permanentAddress": "456 Oak Ave, Hometown",
+        "gurdian": {
+            "fatherName": "Michael Doe",
+            "fatherOccupation": "Engineer",
+            "fatherContactNo": "1111111111",
+            "motherName": "Jane Doe",
+            "motherOccupation": "Doctor",
+            "motherContactNo": "2222222222"
+        },
+        "localGuardian": {
+            "name": "Alice Smith",
+            "occupation": "Teacher",
+            "contactNo": "3333333333",
+            "address": "789 Elm Rd, Nearbytown"
+        },
+        "profileImg": "https://example.com/profile.jpg",
+        "isActive": "active"
     }
-];
-And also changed the lint script to 
-"scripts": {
-    "lint": "eslint src --ignore-pattern .eslintignore --ext .ts"
-   },
-Now I am getting another error → 
-Invalid option '--ext' - perhaps you meant '-c'?
-You're using eslint.config.js, some command line flags are no longer available. Please see https://eslint.org/docs/latest/use/command-line-interface for details.
-x0d\x0a$ 
-Lets copy and paste it into google
-
-Error : main() is declared but never used in app.ts if main is not called then the server will not run so we have to call main()
-The server.ts looks like that → 
-import app from “./app”
-const mongoose = require('mongoose');
-async function main() {
-try{
- await mongoose.connect(config.database_url as string);
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-
-app.listen(config.port, () => {
-  console.log(`Example app listening on port ${config.port}`)
-})
-
-}
-catch(err)
-{
-	console.log(err);
-} 
 }
 
-main();
 
-Solution: If we run the command
-→ npx eslint src -fix
-Eslint will automatically fixes all the problems so let it add to a script
-Add that line to the script
-“lint:fix” : “npx eslint src –fix”
+Now we can test the api , 
+Now we can restart the server using “start:dev” command 
 
-Now if we run →
-npm run lint:fix ⇒ this command will fix the bugs that eslint finds out.
+“start:dev” : “ts-node-dev --respawn --transpile-only src/server.ts”
 
-Some Extra rules in eslint.rc →
 
-"rules": {
-    "@typescript-eslint/no-unused-vars": "error",
-    // to enforce using type for object type definitions, can be type or interface 
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"], 
-	“no-unused-expression” : “error”,
-	“prefer-const”: “error”,
-	“no-console”: “warn”,
-	“no-undef”: “error”
-  },
-“globals”:{
-“process” : “readonly”
+If we hit the data the server will not resond . why ? it is not responding ? because we are sending out data into a object name student and into student we are sending our data
+
+So from controller we also have to receive data student named , So get back to the student.controller.ts
+
+And catch the data named student
+
+const { student: studentData } = req.body;
+
+The method is called destructering and studentData is the allies for student and we will receive studentData into services
+
+So now the StudentController looks like → 
+
+const createStudent = async (req: Request, res: Response) => {
+  try {
+    const { student: studentData } = req.body;
+    const result = await StudentServices.createStudentIntoDB(studentData);
+
+    res.status(200).json({
+      success: true,
+      message: 'Student is created succesfully',
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+Now the request , res → successfully inserted, We can go to the mongodb compass to see if the data is inserted or not , so we again and again go to the mongodb and see if the data is inserted or not , rather we could use mongodb compass to see the datas. 
+
+What we have to do ?
+We have to go to the mongodb atlas and copy and paste the url connection string that is inside our .env file
+And we can connect our compass with mongodb atlas
+
+We can use the connection in favouites so that we don’t have to cpy and pst the string again and again .
+
+
+3-10 Create Get Student Route
+https://web.programming-hero.com/l2-b1-b2-mission-success/video/l2-b1-b2-mission-success-8-10-create-get-student-route 
+
+So we can get back to students.service.ts
+
+Now create a function that getAllStudentsFromDB that is async await function ⇒
+
+const getAllStudentsFromDB = async () => {
+  const result = await StudentModel.find();
+  return result;
+};
+
+
+find() == find() is a mongoose model that will give all data from the document
+
+So we can get back to students.controller.ts
+
+And create a function getAllStudents that will take the return data from services
+
+const getAllStudents = async (req: Request, res: Response) => {
+  try {
+    const result = await StudentServices.getAllStudentsFromDB();
+
+    res.status(200).json({
+      success: true,
+      message: 'Students are retrieved succesfully',
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+Now we have to export the controller →
+
+export const StudentController = {
+getAllStudents,
 }
-No unused-expression : we don’t want any unused expression,
-Prefer-const : we can’t use let
-No-undef : we can’t except any undefined variable
-“globals”:{
-“process” : “readonly”
-}
-⇒ refers that we have a global variable called process which only we reads.
-Now check if lintIn run perfectly or not
-→ npm run lint
-
-If any problem occurred run npm run lint:fix
-
-Error: ‘process’ is not defined no-undef , because process.env is not a local variable its a global variable,
-
-→Solution: We have to add the eslint.rc some global variable, go to eslint.rc, after rules add a property called globals
-rules: {
-},
-“Globals”:{
-	“process”: “readonly”
-}
-
-Install prettier
-We go to the documentation  again → https://blog.logrocket.com/linting-typescript-eslint-prettier/ 
-And run the command → 
-npm install --save-dev prettier
-While installing prettier we are encountering a error: 
 
 
-After that we have to create a file in the root name prettierrc.json and add the rules →
-// .prettierrc.json
-{
-  "semi": true, // Specify if you want to print semicolons at the end of statements
-  "singleQuote": true, // If you want to use single quotes
-  "arrowParens": "avoid", // Include parenthesis around a sole arrow function parameter
-}
-We can use a command to format our code to pretty app.ts
-npx prettier --write src/app.ts
-If we go down in the documentation  there is a script given prettier
-"prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\""
+Now get back to the student.route.ts →
 
-Now we need to set some setting in vscode
-Go to vscode setting.json → 
-Add this two lines in settings.json
-"editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-Now there are two ways to use eslint and prettier , one command and another one is extension
-With command we can run the commands before pussing out 
+Add a get route inside student.route.ts
 
-Now in the documents there might be sometimes prettier and eslint will conflict so we need to install another package 
-Run this command →
-npm install --save-dev eslint-config-prettier
-
-And we have to add another scripts in eslint.rc so we can replace extends from eslint.rc in this line
-"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
-
-Now we can add a script in package.json to fix all files in prettier
-Script: {
-“prettier:fix” : “npx prettier --write src”,
-}
-Now we can run the command npm run prettier:fix
-.gitignore: .gitignore will ignore the files that we don’t want to push in the github
-node_modules
-dist 
-
-Now we can run the project using this command two command
-npm run build
-node run dist/server.js
-While i am trying to start the server with this command I am finding a error that path is not found I am keep going on the process
-
-Error: In mezba bhai project there is a mongodb server is not white listed. 
-Solution : 
-Go to mongodb atlas → network access → add ip address → allow access from anywhere
-
-Now everytime node modules run and server run is quite bit pathetic, So there is a package name tsnodedev we can use this , But we can not use it everytime we have to give production node javascript file
-TS-Node-Dev: 
-https://www.npmjs.com/package/ts-node-dev 
-Now copy and run the command :
-  npm i ts-node-dev 
-Now go to its github → 
-https://github.com/wclr/ts-node-dev#readme 
-For using ts-node-dev we have to run another command →
-npm run ts-node-dev --respawn --transpile-only src/server.ts 
-
-Add Script: 
-Each time to run this command is hatric so we can add a script in package,json →
-
-“start:dev” : “ts-node-dev --respawn --transpile-only src/server.ts ”
-“start:pod” : “node ./dist/server.js”
+router.get(“/”, StudentsControllers.getAllStudents );
 
 
-We can add a variable to the .env that can define either we are using production or development
-So inside .env →
-NODE_ENV = development
+Now get back to the postman and create a new route in the postman name → Get All Students
 
-__ Basic project setup done
+And give a get request for the new get request →
+
+
+Now we get back to Student.service.ts →
+
+https://github.com/Apollo-Level2-Web-Dev/Level2-Batch-3-PH-university-server/blob/mastering-mongoose/src/app/modules/student/student.service.ts 
+
+Create a new function called getSingleStudentFromDB , so inside Student.service.ts , 
 
 
 
 
+const getSingleStudentFromDB = async (id: string) => {
+  const result = await StudentModel.findOne({ id });
+  return result;
+};
+
+Now we will get back to Student.controller.ts and create a new function named getSingleStudent
+
+⇒
+const getSingleStudent = async (req: Request, res: Response) => {
+  try {
+    const { studentId } = req.params;
+
+    const result = await StudentServices.getSingleStudentFromDB(studentId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Student is retrieved succesfully',
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+Req.params will take the studentId from the routes ,
 
 
+Now we will get back to the Student.route.ts and make a get request to get single student
 
-Step by step
-Npm init -y ⇒ initialize package.json
+Student.route.ts →
 
+router.get('/:studentId', StudentControllers.getSingleStudent);
+
+
+Now we get back to post man , and try to hit any specific student id data , 
+
+Error: In mezba bhai project the two data was same id so if that happens we delete it from mongodb compass because we will validate and sanidate the data from next module.
 
 
 
