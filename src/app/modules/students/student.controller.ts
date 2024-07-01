@@ -16,3 +16,8 @@ const createStudent =async (req: Request, res: Response) =>{
         console.log(error)
    }
 }
+
+
+export const StudentController = {
+    createStudent
+}
