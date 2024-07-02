@@ -34,7 +34,7 @@ const studentSchema = new Schema<Student>({
         type: String,
         enum: {
             values: ["male","female"],
-            message: "Gender must be one of the following 'male' 'female' 'others'" 
+            message: "{VALUE} is invalid, Gender must be one of the following 'male' 'female' 'others'" 
         },
         required: true
     },
@@ -46,7 +46,7 @@ const studentSchema = new Schema<Student>({
         type: String,
         enum: {
             values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-            message: "Please provide a valid blood group"
+            message: "{VALUE} is invalid Please provide a valid blood group"
         }
     },
     presentAddress: {type: String, required: [true, "Present address is required"]},
