@@ -9,14 +9,17 @@ const userNameSchema = new Schema<UserName>({
          minlength:[3, "First name is no more than 3 charecter"],
          maxlength: [20, "First name should not have more than 20 charector"],
          trim: true,
-         validate: function(value: string): boolean{
+         validate: 
+         { validator: function(value: string): boolean{
             const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
             if(value !== capitaliseFormat)
             {
                 return false
             }
             return true
-         }
+          },
+          message: "First name is not in a valid format"
+        }
         },
     middleName: { type: String, trim: true},
     lastName: {
@@ -25,39 +28,48 @@ const userNameSchema = new Schema<UserName>({
      minlength: [5, "Last name have at least 5 charector"],
      maxlength: [20, "Last name have not more than 20 charector"] ,
      trim: true,
-     validate: function(value: string): boolean{
+     validate:
+    {validator:  function(value: string): boolean{
         const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
         if(value !== capitaliseFormat)
         {
             return false
         }
         return true
-     }
+     },
+     message: "Last name is not in a valid format"
+    }
       }
 })
 
 const gardianSchema = new Schema<Gardian>({
     fatherName: {type: String, required: [true, "Father name is required"], trim: true,
-        validate: function(value: string): boolean{
+        validate:
+        { validator : function(value: string): boolean{
             const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
             if(value !== capitaliseFormat)
             {
                 return false
             }
             return true
-         }
+         },
+         message: "Father name is in capitalized format"
+        }
     },
     fatherOccupation: {type: String, required: [true,"Father occupation is required"], trim: true},
     fatherContactNo: {type: String, required: [true, "Father contact number is required"], trim: true},
     motherName: {type: String, required: [true, "Mother name is required"], trim: true, 
-        validate: function(value: string): boolean{
+        validate:
+        {validator:  function(value: string): boolean{
             const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
             if(value !== capitaliseFormat)
             {
                 return false
             }
             return true
-         }
+         },
+         message: "Mother name is not in a capitalized format"
+        }
     },
     motherOccupation: {type: String, required: [true, "Mother occupation is required"], trim: true},
     motherContactNo: {type: String, required:[true,"Mother occupation is required"], trim: true}
