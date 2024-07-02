@@ -1,5 +1,6 @@
 import { Schema, model, connect } from 'mongoose';
 import { Gardian, LocalGuardian, Student, UserName } from './student.interface';
+import validator from 'validator';
 
 
 const userNameSchema = new Schema<UserName>({
@@ -9,17 +10,10 @@ const userNameSchema = new Schema<UserName>({
          minlength:[3, "First name is no more than 3 charecter"],
          maxlength: [20, "First name should not have more than 20 charector"],
          trim: true,
-         validate: 
-         { validator: function(value: string): boolean{
-            const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
-            if(value !== capitaliseFormat)
-            {
-                return false
-            }
-            return true
-          },
-          message: "First name is not in a valid format"
-        }
+         validate: {
+            validator: (value : string) => validator.isAlpha(value),
+            message: "{VALUE} is not a valid name"
+         }
         },
     middleName: { type: String, trim: true},
     lastName: {
@@ -107,7 +101,16 @@ const studentSchema = new Schema<Student>({
         required: true
     },
     dateOfBirth: {type: String},
-    email: {type: String, required: [true, "Email is required"], unique: true},
+    email: {
+    type: String,
+    required: [true, "Email is required"],
+    unique: true,
+    trim: true,
+    validate: {
+        validator: (value: string) => validator.isEmail(value),
+        message: "{VALUE} is not a valid email format"
+    }
+    },
     contactNo: {type: String, required: [true, "Contact number is required"]},
     emergencyContactNo: {type: String, required: [true, "Emergency contact number is required"]},
     bloodGroup: {
