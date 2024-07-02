@@ -131,7 +131,13 @@ const studentSchema = new Schema<Student>({
         required: [true, "Local guardian's information is required"]
     },
     profileImg: {type: String},
-    isActive: ["active", "blocked"]
+    isActive: {
+        type: String,
+        enum: {
+            values: ["active", "blocked"],
+            message: "{VALUE} is invalid"
+        }
+    }
     
 })
 
