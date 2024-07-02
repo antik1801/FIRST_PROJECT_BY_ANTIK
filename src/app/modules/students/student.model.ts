@@ -9,8 +9,13 @@ const userNameSchema = new Schema<UserName>({
          minlength:[3, "First name is no more than 3 charecter"],
          maxlength: [20, "First name should not have more than 20 charector"],
          trim: true,
-         validate: function(value: string){
-            console.log(value);
+         validate: function(value: string): boolean{
+            const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
+            if(value !== capitaliseFormat)
+            {
+                return false
+            }
+            return true
          }
         },
     middleName: { type: String, trim: true},
@@ -19,21 +24,57 @@ const userNameSchema = new Schema<UserName>({
      required: [true, "Last name is required"],
      minlength: [5, "Last name have at least 5 charector"],
      maxlength: [20, "Last name have not more than 20 charector"] ,
-    trim: true  
+     trim: true,
+     validate: function(value: string): boolean{
+        const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
+        if(value !== capitaliseFormat)
+        {
+            return false
+        }
+        return true
+     }
       }
 })
 
 const gardianSchema = new Schema<Gardian>({
-    fatherName: {type: String, required: [true, "Father name is required"], trim: true},
+    fatherName: {type: String, required: [true, "Father name is required"], trim: true,
+        validate: function(value: string): boolean{
+            const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
+            if(value !== capitaliseFormat)
+            {
+                return false
+            }
+            return true
+         }
+    },
     fatherOccupation: {type: String, required: [true,"Father occupation is required"], trim: true},
     fatherContactNo: {type: String, required: [true, "Father contact number is required"], trim: true},
-    motherName: {type: String, required: [true, "Mother name is required"], trim: true},
+    motherName: {type: String, required: [true, "Mother name is required"], trim: true, 
+        validate: function(value: string): boolean{
+            const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
+            if(value !== capitaliseFormat)
+            {
+                return false
+            }
+            return true
+         }
+    },
     motherOccupation: {type: String, required: [true, "Mother occupation is required"], trim: true},
     motherContactNo: {type: String, required:[true,"Mother occupation is required"], trim: true}
 })
 
 const localGardianSchema = new Schema<LocalGuardian>({
-    name: {type: String, required: [true, "Local guardian name is required"], trim: true},
+    name: {type: String, required: [true, "Local guardian name is required"], trim: true,
+
+        validate: function(value: string): boolean{
+            const capitaliseFormat = value.charAt(0).toUpperCase() + value.slice(1);
+            if(value !== capitaliseFormat)
+            {
+                return false
+            }
+            return true
+         }
+    },
     occupation: {type: String, required: [true, "Local guardian occupation is required"], trim: true},
     contactNo: {type: String, required: [true, "Local guardian contact number is required"], trim: true},
     address: {type: String, required: [true, "Local guardian address is required"], trim: true},
