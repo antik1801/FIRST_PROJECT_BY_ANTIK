@@ -8,7 +8,10 @@ const userNameSchema = new Schema<UserName>({
          required: [true,"First name is required"],
          minlength:[3, "First name is no more than 3 charecter"],
          maxlength: [20, "First name should not have more than 20 charector"],
-         trim: true
+         trim: true,
+         validate: function(value: string){
+            console.log(value);
+         }
         },
     middleName: { type: String, trim: true},
     lastName: {
