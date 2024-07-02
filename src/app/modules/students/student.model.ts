@@ -3,9 +3,19 @@ import { Gardian, LocalGuardian, Student, UserName } from './student.interface';
 
 
 const userNameSchema = new Schema<UserName>({
-    firstName:{ type: String, required: [true,"First name is required"] },
+    firstName:{
+         type: String,
+         required: [true,"First name is required"],
+         minlength:[3, "First name is no more than 3 charecter"],
+         maxlength: [20, "Last name should not have more than 20 charector"]
+        },
     middleName: { type: String},
-    lastName: { type: String, required: [true, "Last name is required"] }
+    lastName: {
+     type: String,
+     required: [true, "Last name is required"],
+     minlength: [5, "Last name have at least 5 charector"],
+     maxlength: [20, "Last name have not more than 20 charector"]   
+      }
 })
 
 const gardianSchema = new Schema<Gardian>({
