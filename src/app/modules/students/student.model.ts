@@ -27,19 +27,38 @@ const localGardianSchema = new Schema<LocalGuardian>({
 const studentSchema = new Schema<Student>({
     id: { type: String },
     name: {
-        type: String,
+        type: userNameSchema,
         required: [true,"Name is requires"]
     },
-    gender: ["male","female"],
+    gender: {
+        type: String,
+        enum: {
+            values: ["male","female"],
+            message: "Gender must be one of the following 'male' 'female' 'others'" 
+        },
+        required: true
+    },
     dateOfBirth: {type: String},
     email: {type: String, required: [true, "Email is required"]},
     contactNo: {type: String, required: [true, "Contact number is required"]},
     emergencyContactNo: {type: String, required: [true, "Emergency contact number is required"]},
-    bloodGroup: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    bloodGroup: {
+        type: String,
+        enum: {
+            values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+            message: "Please provide a valid blood group"
+        }
+    },
     presentAddress: {type: String, required: [true, "Present address is required"]},
     permanentAddress: {type: String, required: [true, "Permanent address is required"]},
-    gurdian: gardianSchema,
-    localGuardian: localGardianSchema,
+    gurdian: {
+        type: gardianSchema,
+        required: [true, "Guardian's information is required"]
+    },
+    localGuardian: {
+        type: localGardianSchema,
+        required: [true, "Local guardian's information is required"]
+    },
     profileImg: {type: String},
     isActive: ["active", "blocked"]
     
