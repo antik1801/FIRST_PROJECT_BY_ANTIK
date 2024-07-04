@@ -37,10 +37,11 @@ const createStudent =async (req: Request, res: Response) =>{
         data: result
     })
 
-   } catch (err) {
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   } catch (err: any) {
     res.status(500).json({
         success: false,
-        message: 'Something went wrong',
+        message: err.message || 'Something went wrong',
         error : err
     })
    }
