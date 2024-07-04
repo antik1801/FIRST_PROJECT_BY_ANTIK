@@ -192,6 +192,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
       message: "{VALUE} is invalid",
     },
   },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  }
 });
 
 // creating an Instance method
