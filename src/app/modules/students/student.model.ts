@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import { Schema, model } from "mongoose";
+import bcrypt from 'bcrypt'
 import {
   TGardian,
   TLocalGuardian,
@@ -10,6 +11,7 @@ import {
   StudentModel,
 } from "./student.interface";
 import validator from "validator";
+import config from "../../config";
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -129,6 +131,7 @@ const localGardianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel>({
   id: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   name: {
     type: userNameSchema,
     required: [true, "Name is requires"],
@@ -204,4 +207,21 @@ studentSchema.statics.isUserExists = async function (id: string) {
     const existingUser = await Student.findOne({id});
     return existingUser;
 }
+
+
+// build mongoose middlewares
+studentSchema.pre('save',async function(next){
+  // console.log(this, "this is a pre hook middleware")
+  const user = this;
+  user.password = await  bcrypt.hash(user.password, Number(config.bcrypt_salt_round));
+  next();
+})
+
+studentSchema.post('save', function(doc,next){
+  // console.log(this, "this is a post hook middleware")
+  doc.password="";
+  next()
+})
+
+
 export const Student = model<TStudent, StudentModel>("Student", studentSchema);

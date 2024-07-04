@@ -43,6 +43,7 @@ const localGuardianValidationSchema = z.object({
 // Student schema
 const studentValidationSchema = z.object({
   id: z.string(),
+  password: z.string().max(20),
   name: userNameValidationSchema,
   gender: z.enum(["male", "female", "others"], { message: "{VALUE} is invalid, Gender must be one of the following 'male', 'female', 'others'" }),
   dateOfBirth: z.string().optional(),
