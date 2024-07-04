@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import { StudentServices } from "./student.services";
-import JoiValidationSchema from "./student.joi.validation";
+import  studentValidationSchema from "./student.zod.validation";
+// import JoiValidationSchema from "./student.joi.validation";
 
 const createStudent =async (req: Request, res: Response) =>{
    try {
@@ -20,7 +21,15 @@ const createStudent =async (req: Request, res: Response) =>{
     //         error : error.details
     //     })
     //     }
-    const result = await StudentServices.createStudentInDB(studentData);
+
+
+    // --> Zod validation implementation
+
+    const zodParseData = studentValidationSchema.parse(studentData);
+
+    const result = await StudentServices.createStudentInDB(zodParseData)
+
+    // const result = await StudentServices.createStudentInDB(studentData);
     
     res.status(200).json({
         success: true,

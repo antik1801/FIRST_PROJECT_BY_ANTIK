@@ -8,7 +8,7 @@ const userNameValidationSchema = z.object({
     .max(20, "First name should not have more than 20 characters")
     .trim()
     .refine(value => validator.isAlpha(value), { message: "{VALUE} is not a valid name" }),
-  middleName: z.string().trim().optional(),
+  middleName: z.string(),
   lastName: z.string()
     .min(5, "Last name must have at least 5 characters")
     .max(20, "Last name must not have more than 20 characters")
@@ -54,10 +54,10 @@ const studentValidationSchema = z.object({
   bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], { message: "{VALUE} is invalid. Please provide a valid blood group" }).optional(),
   presentAddress: z.string().trim(),
   permanentAddress: z.string().trim(),
-  guardian: guardianValidationSchema,
+  gurdian: guardianValidationSchema,
   localGuardian: localGuardianValidationSchema,
   profileImg: z.string().optional(),
-  isActive: z.enum(["active", "blocked"], { message: "{VALUE} is invalid" }).optional()
+  isActive: z.enum(["active", "blocked"], { message: "{VALUE} is invalid" })
 });
 
-export { studentValidationSchema as studentSchema };
+export default studentValidationSchema
