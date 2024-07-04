@@ -46,11 +46,18 @@ export type StudentMethods = {
 
 // creating a student model for builtin instance methods
 
-export type StudentModel = Model<
-  TStudent,
-  Record<string, never>,
-  StudentMethods
->;
+
+export interface StudentModel extends Model<TStudent> {
+    // eslint-disable-next-line no-unused-vars
+    isUserExists(id: string): Promise<TStudent | null>
+}
+
+
+// export type StudentModel = Model<
+//   TStudent,
+//   Record<string, never>,
+//   StudentMethods
+// >;
 
 // Now it will be give an error → probably want object instance
 // Solution :

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import { Schema, model } from "mongoose";
 import {
   TGardian,
@@ -125,7 +127,7 @@ const localGardianSchema = new Schema<TLocalGuardian>({
   },
 });
 
-const studentSchema = new Schema<TStudent, StudentMethods, StudentModel>({
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: { type: String, required: true, unique: true },
   name: {
     type: userNameSchema,
@@ -189,10 +191,17 @@ const studentSchema = new Schema<TStudent, StudentMethods, StudentModel>({
   },
 });
 
-// creating a static method
-studentSchema.methods.isUserExists = async function (id: string) {
-  const existingUser = await Student.findOne({ id });
-  return existingUser;
-};
+// creating an Instance method
+// studentSchema.methods.isUserExists = async function (id: string) {
+//   const existingUser = await Student.findOne({ id });
+//   return existingUser;
+// };
 
+
+
+// creating a static custom method mostly like instance methods
+studentSchema.statics.isUserExists = async function (id: string) {
+    const existingUser = await Student.findOne({id});
+    return existingUser;
+}
 export const Student = model<TStudent, StudentModel>("Student", studentSchema);
