@@ -27,6 +27,17 @@ const createStudentInDB = async (studentData: TStudent) => {
   return result;
 };
 
+const getAllStudentsFromDB = async () =>{
+  const result = await Student.find();
+  return result;
+}
+
+const deleteStudentFromDB = async (id: string) =>{
+  
+}
+
 export const StudentServices = {
   createStudentInDB,
+  getAllStudentsFromDB,
+
 };

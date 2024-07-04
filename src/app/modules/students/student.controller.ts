@@ -48,6 +48,39 @@ const createStudent =async (req: Request, res: Response) =>{
 }
 
 
-export const StudentController = {
-    createStudent
+const getAllStudents = async (req:Request, res:Response) =>{
+    try {
+        const result = await StudentServices.getAllStudentsFromDB();
+
+        res.status(200).json({
+            success: true,
+            message: "Students are retreved successfully",
+            data: result
+        })
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.message || 'something went wrong',
+            error: err,
+          });
+      
 }
+}
+
+
+const getSingleStudent = async(req:Request, res:Response) =>{
+    try {
+        
+        const {studentId} = req.params;
+        
+
+    } catch (err: any) {
+        
+    }
+}
+
+export const StudentController = {
+    createStudent,
+    getAllStudents,
+    getSingleStudent
+};

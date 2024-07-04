@@ -217,6 +217,11 @@ studentSchema.pre('save',async function(next){
   next();
 })
 
+studentSchema.pre('find', function(){
+  console.log(this);
+})
+
+
 studentSchema.post('save', function(doc,next){
   // console.log(this, "this is a post hook middleware")
   doc.password="";
