@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model} from 'mongoose';
 import { Gardian, LocalGuardian, Student, UserName } from './student.interface';
 import validator from 'validator';
 
