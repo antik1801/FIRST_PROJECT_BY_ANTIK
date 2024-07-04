@@ -75,6 +75,7 @@ const JoiValidationSchema = Joi.object({
   });
   
   // Joi validation for Student
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const StudentValidationSchema = Joi.object({
     id: Joi.string().required().messages({
       'any.required': 'ID is required',
