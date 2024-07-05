@@ -40,10 +40,10 @@ const deleteStudentFromDB = async (id: string) =>{
 const getSingleStudentFromDB = async (id: string) =>{
 
    // findOn normal method 
-  const result = await Student.findOne({id: id});
+  // const result = await Student.findOne({id: id});
 
   // findOne --> aggregation method
-  // const result = await Student.aggregate([{$match : {id}}]);
+  const result = await Student.aggregate([{$match : {id}}]);
   return result;
 }
 

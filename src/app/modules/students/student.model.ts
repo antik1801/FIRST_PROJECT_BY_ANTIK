@@ -242,4 +242,9 @@ studentSchema.post('save', function(doc,next){
 })
 
 
+studentSchema.pre('aggregate', function(next){
+  this.pipeline().unshift({$match: { isDeleted: {$ne: true} }})
+  next();
+})
+
 export const Student = model<TStudent, StudentModel>("Student", studentSchema);
