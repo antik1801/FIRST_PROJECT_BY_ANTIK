@@ -33,7 +33,7 @@ const getAllStudentsFromDB = async () =>{
 }
 
 const deleteStudentFromDB = async (id: string) =>{
-  const result = await Student.updateOne({id}, {idDeleted: true})
+  const result = await Student.updateOne({id}, {isDeleted: true})
   return result;
 }
 

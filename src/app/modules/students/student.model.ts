@@ -221,8 +221,10 @@ studentSchema.pre('save',async function(next){
   next();
 })
 
-studentSchema.pre('find', function(){
-  console.log(this);
+studentSchema.pre('find', function(next){
+  // console.log(this);
+  this.find({isDeleted: {$ne: true}});
+  next();
 })
 
 
