@@ -196,7 +196,21 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     type: Boolean,
     default: false
   }
-});
+},{
+  toJSON:{
+    virtuals: true,
+  }
+}
+
+);
+
+
+studentSchema.virtual('fullName').get(function(){
+  return(
+    `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
+  )
+})
+
 
 // creating an Instance method
 // studentSchema.methods.isUserExists = async function (id: string) {
