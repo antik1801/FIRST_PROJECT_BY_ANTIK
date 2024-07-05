@@ -227,6 +227,13 @@ studentSchema.pre('find', function(next){
   next();
 })
 
+studentSchema.pre('findOne', function(next){
+  // console.log(this);
+  this.find({isDeleted: {$ne: true}});
+  next();
+})
+
+
 
 studentSchema.post('save', function(doc,next){
   // console.log(this, "this is a post hook middleware")

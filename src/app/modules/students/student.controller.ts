@@ -72,10 +72,30 @@ const getSingleStudent = async(req:Request, res:Response) =>{
     try {
         
         const {studentId} = req.params;
-        
+        const result = await StudentServices.getSingleStudentFromDB(studentId);
+
+        if(result)
+        {
+        res.status(200).json({
+            success: true,
+            message: "Student is retreved successfully",
+            data: result
+        })
+        }
+        else
+        {
+        res.status(500).json({
+            success: false,
+            message: 'something went wrong'
+        });
+        }
 
     } catch (err: any) {
-        
+        res.status(500).json({
+            success: false,
+            message: err.message || 'something went wrong',
+            error: err,
+          });
     }
 }
 
