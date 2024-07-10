@@ -14,19 +14,25 @@ const userSchema = new Schema<TUser>({
     needsPasswordChange: {
         type: Boolean,
         default: true,
+        // no need to validate because default value
+
     },
     role: {
         type: String,
         enum: ['admin', 'student', 'faculty']
+        // will set it from api end points 
     },
     isDeleted: {
         type: Boolean,
         default: false,
+        // no need to validate because default value
     },
     status: {
         type: String,
         enum: ['in-progress', 'blocked'],
         default: 'in-progress'
+        // no need to validate because default value
+
     }
 },
 {
