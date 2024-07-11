@@ -6,11 +6,11 @@ import { userServices } from "./user.service";
 const createStudent =async (req: Request, res: Response) =>{
     try {
      
-     const {student: studentData} = req.body;
+     const {password , student: studentData} = req.body;
  
     //  const zodParseData = studentValidationSchema.parse(studentData);
  
-     const result = await userServices.createStudentInDB(studentData)
+     const result = await userServices.createStudentInDB(password, studentData)
      
      res.status(200).json({
          success: true,
