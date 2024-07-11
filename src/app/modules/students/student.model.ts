@@ -131,6 +131,11 @@ const localGardianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel>({
   id: { type: String, required: true, unique: true },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'User Id is required'],
+    unique: [true, 'User Id is unique']
+  },
   password: { type: String, required: true },
   name: {
     type: userNameSchema,

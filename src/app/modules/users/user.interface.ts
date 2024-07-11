@@ -8,8 +8,10 @@ export type TUser = {
     isDeleted: boolean; // setting true by default
 }
 
-export type TNewUser ={
-    password: string;
-    role: string;
-    id: string;
-}
+// We don't need to make TNewuser
+
+// export type TNewUser ={
+//     password: string;
+//     role: string;
+//     id: string;
+// }
