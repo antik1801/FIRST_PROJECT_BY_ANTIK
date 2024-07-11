@@ -6,10 +6,12 @@ const userSchema = new Schema<TUser>({
     id: {
         type: String,
         required: true,
+        // will be set from the backend generated
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
+        // if user didn't give the password then it will be auto generated from system 
     },
     needsPasswordChange: {
         type: Boolean,

@@ -2,9 +2,7 @@ import {z} from 'zod'
 
 
 const userValidationSchema = z.object({
-    Password: z.string().optional(),
-    isDeleted: z.boolean().default(false),
-    status: z.string().default('in-progress')
+    Password: z.string().max(20).min(3).optional(),
 })
 
 
