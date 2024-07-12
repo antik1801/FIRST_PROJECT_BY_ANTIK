@@ -12,6 +12,7 @@ import {
 } from "./student.interface";
 import validator from "validator";
 import config from "../../config";
+import { required } from "joi";
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -130,14 +131,12 @@ const localGardianSchema = new Schema<TLocalGuardian>({
 });
 
 const studentSchema = new Schema<TStudent, StudentModel>({
-  id: { type: String, required: true, unique: true },
   user: {
     type: Schema.Types.ObjectId,
     required: [true, 'User Id is required'],
     unique: true,
     ref: 'User'
   },
-  password: { type: String, required: true },
   name: {
     type: userNameSchema,
     required: [true, "Name is requires"],
@@ -191,6 +190,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: [true, "Local guardian's information is required"],
   },
   profileImg: { type: String },
+  academicDepartment:{
+    type: String,
+    required: [true, 'Academic department name is required']
+  },
   isDeleted: {
     type: Boolean,
     default: false
@@ -248,11 +251,11 @@ studentSchema.pre('findOne', function(next){
 
 
 
-studentSchema.post('save', function(doc,next){
-  // console.log(this, "this is a post hook middleware")
-  doc.password="";
-  next()
-})
+// studentSchema.post('save', function(doc,next){
+//   // console.log(this, "this is a post hook middleware")
+//   doc.password="";
+//   next()
+// })
 
 
 studentSchema.pre('aggregate', function(next){
