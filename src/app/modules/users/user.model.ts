@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
-
+import config from "../../config";
+import bcrypt from 'bcrypt'
 
 const userSchema = new Schema<TUser>({
     id: {
@@ -45,6 +46,16 @@ const userSchema = new Schema<TUser>({
     timestamps: true
 }
 )
+
+
+// build mongoose middlewares
+userSchema.pre('save',async function(next){
+    // console.log(this, "this is a pre hook middleware")
+    
+    this.password = await  bcrypt.hash(this.password, Number(config.bcrypt_salt_round));
+    next();
+})
+
 
 
 export const User = model<TUser>('Users', userSchema);
