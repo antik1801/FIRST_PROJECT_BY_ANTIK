@@ -134,7 +134,8 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   user: {
     type: Schema.Types.ObjectId,
     required: [true, 'User Id is required'],
-    unique: [true, 'User Id is unique']
+    unique: true,
+    ref: 'User'
   },
   password: { type: String, required: true },
   name: {
@@ -190,13 +191,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: [true, "Local guardian's information is required"],
   },
   profileImg: { type: String },
-  isActive: {
-    type: String,
-    enum: {
-      values: ["active", "blocked"],
-      message: "{VALUE} is invalid",
-    },
-  },
   isDeleted: {
     type: Boolean,
     default: false
@@ -235,8 +229,8 @@ studentSchema.statics.isUserExists = async function (id: string) {
 // build mongoose middlewares
 studentSchema.pre('save',async function(next){
   // console.log(this, "this is a pre hook middleware")
-  const user = this;
-  user.password = await  bcrypt.hash(user.password, Number(config.bcrypt_salt_round));
+  // const user = this;
+  // user.password = await  bcrypt.hash(user.password, Number(config.bcrypt_salt_round));
   next();
 })
 
