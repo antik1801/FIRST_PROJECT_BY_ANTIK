@@ -22,9 +22,14 @@ app.use("/api/v1", router);
 
 // we need to create a global error handler
 app.use((err : any, req:Request, res:Response, next:NextFunction)=>{
-    res.status(500).json({
+
+  const statusCode = 500;
+  const message = err.message || 'Something went wrong';
+
+
+    res.status(statusCode).json({
       success: false,
-      message: err.message || 'Something went wrong',
+      message: message || 'Something went wrong',
       error : err
     })
 
