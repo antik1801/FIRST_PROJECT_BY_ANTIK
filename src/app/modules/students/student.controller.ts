@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {NextFunction, Request, Response} from "express";
 import { StudentServices } from "./student.services";
+import sendResponse from "../../utils/sendResponse";
+import httpStatus from "http-status";
 // import JoiValidationSchema from "./student.joi.validation";
 
 
@@ -29,11 +31,12 @@ const getSingleStudent = async(req:Request, res:Response, next:NextFunction) =>{
 
         if(result)
         {
-        res.status(200).json({
-            success: true,
-            message: "Student is retrieved successfully",
-            data: result
-        })
+       sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Single student retrieved successfully",
+        data: result
+       })
         }
         else
         {
@@ -54,11 +57,12 @@ const deleteStudent = async(req:Request, res:Response, next:NextFunction) =>{
         const { studentId } = req.params;
         const result = await StudentServices.deleteStudentFromDB(studentId)
 
-        res.status(200).json({
-            success: true,
-            message: 'Student is deleted successfully',
-            data: result
-        })
+       sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Student deleted successfully",
+        data: result
+       });
 
     } catch (err) {
         next(err);

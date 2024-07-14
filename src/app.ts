@@ -7,6 +7,7 @@ import router from "./app/routes";
 import { StudentRoutes } from "./app/modules/students/student.route";
 import { userRoutes } from "./app/modules/users/user.route";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import notFoundRoute from "./app/middlewares/notFound";
 
 
 // express
@@ -32,5 +33,6 @@ app.get("/", (res: Response) => {
 });
 
 
+app.use(notFoundRoute);
 
 export default app;
