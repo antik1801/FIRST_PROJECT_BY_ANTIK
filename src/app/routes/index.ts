@@ -4,7 +4,17 @@ import { usersRoutes } from "../modules/users/user.route";
 
 const router = express.Router();
 
-router.use("/students", StudentsRoutes);
-router.use("/users", usersRoutes);
+const moduleRoutes = [
+    {
+        path: "/users",
+        route: usersRoutes
+    },
+    {
+        path: "/students",
+        route: StudentsRoutes
+    }
+]
+
+moduleRoutes.forEach(route => router.use(route.path, route.route))
 
 export default router;
