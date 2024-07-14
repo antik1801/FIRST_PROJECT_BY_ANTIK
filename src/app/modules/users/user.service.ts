@@ -5,43 +5,43 @@ import { TUser } from "./user.interface";
 // import { Student } from "../students/student.model";
 import { User } from "./user.model";
 
-const createStudentInDB = async (password: string , studentData: TStudent) => {
+const createStudentIntoDB = async (password: string , studentData: TStudent) => {
 
     // we have to create a user object
 
     // since we are using some partial property field in TUser so we can say partial<TUser>
-    const newUserData : Partial<TUser>  = {};
+    const userData : Partial<TUser>  = {};
 
     // inside user object we have to check whether password is given or not
-    newUserData.password = password || config.default_password as string;
+    userData.password = password || config.default_password as string;
 
     // we have to set the role of the user --> student
-    newUserData.role = "student";
+    userData.role = "student";
 
     // set the student id
-    newUserData.id = "203010001";
+    userData.id = "203010001";
 
 //   if (await Student.isUserExists(studentData.id)) {
 //     throw new Error("Student is already exists");
 //   }
-  const result = await User.create(newUserData);
+  const newUser = await User.create(userData);
 
     // now if the results exists means the user is created successfully 
     // so we can move on creating a new student
 
     // if there is length if the object result
-    if(Object.keys(result).length)
+    if(Object.keys(newUser).length)
     {
-        studentData.id = result.id;
-        studentData.user = result._id;
+        studentData.id = newUser.id;
+        studentData.user = newUser._id;
 
-        const createNewStudent = Student.create(studentData);
-        return createNewStudent;
+        const result = await Student.create(studentData);
+        return result;
     }
 
-  return result;
+  return newUser;
 };
 
 export const userServices = {
-  createStudentInDB,
+  createStudentInDB: createStudentIntoDB,
 };

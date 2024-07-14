@@ -8,7 +8,7 @@ export type TUser = {
     isDeleted: boolean; // setting true by default
 }
 
-// We don't need to make TNewuser
+// We don't need to make TNewuser because we can Partial<TUser> and reuse TUser pertial values to define type
 
 // export type TNewUser ={
 //     password: string;
