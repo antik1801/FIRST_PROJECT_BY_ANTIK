@@ -6,6 +6,8 @@ import cors from "cors";
 import router from "./app/routes";
 import { StudentRoutes } from "./app/modules/students/student.route";
 import { userRoutes } from "./app/modules/users/user.route";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+
 
 // express
 const app = express();
@@ -21,7 +23,8 @@ app.use('/api/v1/users', userRoutes)
 app.use("/api/v1", router);
 
 // we need to create a global error handler
-app.use((err : any, req:Request, res:Response, next:NextFunction)=>{
+
+app.use((err: any, res:Response)=>{
 
   const statusCode = 500;
   const message = err.message || 'Something went wrong';
@@ -33,10 +36,13 @@ app.use((err : any, req:Request, res:Response, next:NextFunction)=>{
       error : err
     })
 
-})
+});
 
-app.get("/", (req: Request, res: Response) => {
+
+app.get("/", (res: Response) => {
   res.send("Hello World!");
 });
+
+
 
 export default app;
