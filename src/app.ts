@@ -21,7 +21,7 @@ app.use("/api/v1", router);
 
 // we need to create a global error handler
 
-app.use(globalErrorHandler);
+app.use(globalErrorHandler); // using global error handlers
 
 app.get("/", (res: Response) => {
   res.send("Hello World!");

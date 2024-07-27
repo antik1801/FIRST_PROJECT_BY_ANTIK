@@ -41,24 +41,26 @@ const localGuardianValidationSchema = z.object({
 });
 
 // Student schema
-const studentValidationSchema = z.object({
-  id: z.string(),
-  name: userNameValidationSchema,
-  gender: z.enum(["male", "female", "others"], { message: "{VALUE} is invalid, Gender must be one of the following 'male', 'female', 'others'" }),
-  dateOfBirth: z.string().optional(),
-  email: z.string()
-    .trim()
-    .refine(value => validator.isEmail(value), { message: "{VALUE} is not a valid email format" }),
-  contactNo: z.string().trim(),
-  emergencyContactNo: z.string().trim(),
-  bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], { message: "{VALUE} is invalid. Please provide a valid blood group" }).optional(),
-  presentAddress: z.string().trim(),
-  permanentAddress: z.string().trim(),
-  gurdian: guardianValidationSchema,
-  localGuardian: localGuardianValidationSchema,
-  profileImg: z.string().optional(),
-  academicDepartment: z.string(),
-  isDeleted: z.boolean().optional().default(false)
+const createStudentValidationSchema = z.object({
+  body: z.object({
+    id: z.string(),
+    name: userNameValidationSchema,
+    gender: z.enum(["male", "female", "others"], { message: "{VALUE} is invalid, Gender must be one of the following 'male', 'female', 'others'" }),
+    dateOfBirth: z.string().optional(),
+    email: z.string()
+      .trim()
+      .refine(value => validator.isEmail(value), { message: "{VALUE} is not a valid email format" }),
+    contactNo: z.string().trim(),
+    emergencyContactNo: z.string().trim(),
+    bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], { message: "{VALUE} is invalid. Please provide a valid blood group" }).optional(),
+    presentAddress: z.string().trim(),
+    permanentAddress: z.string().trim(),
+    gurdian: guardianValidationSchema,
+    localGuardian: localGuardianValidationSchema,
+    profileImg: z.string().optional(),
+    academicDepartment: z.string(),
+    isDeleted: z.boolean().optional().default(false)
+  })
 });
 
-export default studentValidationSchema
+export default createStudentValidationSchema
