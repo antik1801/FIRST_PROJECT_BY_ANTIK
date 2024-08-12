@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {NextFunction, Request, RequestHandler, Response} from "express";
+import { Request, Response} from "express";
 import { StudentServices } from "./student.services";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
@@ -7,7 +7,7 @@ import catchAsync from "../../utils/catchAsync";
 // import JoiValidationSchema from "./student.joi.validation";
 
 
-const getAllStudents = catchAsync(async (req:Request, res:Response, next: NextFunction) =>{
+const getAllStudents = catchAsync(async (req:Request, res:Response) =>{
    
     const result = await StudentServices.getAllStudentsFromDB();
 
@@ -19,7 +19,7 @@ const getAllStudents = catchAsync(async (req:Request, res:Response, next: NextFu
 })
 
 
-const getSingleStudent = catchAsync(async(req:Request, res:Response, next:NextFunction) =>{
+const getSingleStudent = catchAsync(async(req:Request, res:Response) =>{
 
     const {studentId} = req.params;
     const result = await StudentServices.getSingleStudentFromDB(studentId);
@@ -33,7 +33,7 @@ const getSingleStudent = catchAsync(async(req:Request, res:Response, next:NextFu
 
 })
 
-const deleteStudent = catchAsync(async(req:Request, res:Response, next:NextFunction) =>{
+const deleteStudent = catchAsync(async(req:Request, res:Response) =>{
     
         
     const { studentId } = req.params;
