@@ -1,4 +1,4 @@
-import { Request, Response , NextFunction, RequestHandler} from "express";
+import { Request, Response } from "express";
 import { userServices } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
@@ -6,7 +6,7 @@ import catchAsync from "../../utils/catchAsync";
 
 
 
-const createStudent = catchAsync(async (req: Request, res: Response, next: NextFunction) =>{
+const createStudent = catchAsync(async (req: Request, res: Response) =>{
     const {password , student: studentData} = req.body;
    //  const zodParseData = studentValidationSchema.parse(studentData);
     const result = await userServices.createStudentInDB(password, studentData)
