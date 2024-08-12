@@ -9,7 +9,8 @@ const createAcademicSemesterValidationSchema = z.object({
         code: z.enum([...academicSemesterCodes] as [string, ...string[]]),
         year: z.string(),
         startMonth: z.enum([...months] as [string, ...string[]]),
-        endMonth: z.enum([...months] as [string, ...string[]])
+        endMonth: z.enum([...months] as [string, ...string[]]),
+        isDeleted: z.boolean().optional().default(false)
     })
 })
 
@@ -19,7 +20,8 @@ const updateAcademicSemesterValidationSchema = z.object({
         code: z.enum([...academicSemesterCodes] as [string, ...string[]]).optional(),
         year: z.string().optional(),
         startMonth: z.enum([...months] as [string, ...string[]]).optional(),
-        endMonth: z.enum([...months] as [string, ...string[]]).optional()
+        endMonth: z.enum([...months] as [string, ...string[]]).optional(),
+        isDeleted: z.boolean().optional().default(false)
     })
 })
 

@@ -12,6 +12,7 @@ export type TAcademicSemester = {
     code: TAcademicSemesterCode,
     startMonth: TMonth,
     endMonth: TMonth,
+    isDeleted: boolean,
 }
 
 export type TAcademicSemesterNameCodeMapper = {

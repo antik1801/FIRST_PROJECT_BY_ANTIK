@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { academicSemesterServices } from "./academicSemester.service";
+
 
 
 const createAcademicSemester = catchAsync(async(req: Request, res: Response) =>{
@@ -50,9 +53,21 @@ const updateSingleAcademicSemester = catchAsync(async(req: Request, res: Respons
     })
 })
 
+const deleteSingleAcademicSemester = catchAsync(async(req: Request,res: Response) =>{
+    const {semesterId} = req.params;
+    const result = await academicSemesterServices.deleteSingleAcademicSemesterFromDB(semesterId);
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Single Academic Semester Deleted successfully",
+        data: {}
+    })
+})
+
 export const academicSemesterControllers = {
     createAcademicSemester,
     getAllAcademicSemester,
     getSingleAcademicSemester,
-    updateSingleAcademicSemester
+    updateSingleAcademicSemester,
+    deleteSingleAcademicSemester
 }

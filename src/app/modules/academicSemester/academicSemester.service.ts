@@ -37,10 +37,16 @@ const updateSingleAcademicSemesterFromDB = async (id: string , payload: Partial<
     return result;
 }
 
+const deleteSingleAcademicSemesterFromDB = async(id: string) =>{
+    const result = await AcademicSemester.findOneAndUpdate({_id: id}, {isDeleted: true})
+    return result;
+}
+
 
 export const academicSemesterServices = {
   createAcademicSemesterIntoDB,
   getAllAcademicSemesterFromDB,
   getSingleAcademicSemesterFromDB,
-  updateSingleAcademicSemesterFromDB
+  updateSingleAcademicSemesterFromDB,
+  deleteSingleAcademicSemesterFromDB
 };

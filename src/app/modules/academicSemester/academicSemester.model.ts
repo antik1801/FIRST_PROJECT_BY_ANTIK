@@ -6,6 +6,7 @@ import { academicSemesterCodes, academicSemesterNames, months } from "./academic
 
 
 
+
 const academicSemesterSchema = new Schema<TAcademicSemester>(
     {
         name: {
@@ -32,6 +33,11 @@ const academicSemesterSchema = new Schema<TAcademicSemester>(
             type: String,
             enum: months,
             required: true
+        },
+        isDeleted:
+        {
+            type: Boolean,
+            default: false,
         }
     },
     {
@@ -52,5 +58,17 @@ academicSemesterSchema.pre("save",async function (next){
     next();
 })
 
+academicSemesterSchema.pre('find', function(next){
+    // console.log(this);
+    this.find({isDeleted: {$ne: true}});
+    next();
+  })
+  
+academicSemesterSchema.pre('findOne', function(next){
+    // console.log(this);
+    this.find({isDeleted: {$ne: true}});
+    next();
+  })
+  
 
 export const AcademicSemester =  model<TAcademicSemester>('Academic-Semester', academicSemesterSchema);

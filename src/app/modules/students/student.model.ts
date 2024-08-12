@@ -10,6 +10,7 @@ import {
   StudentModel,
 } from "./student.interface";
 import validator from "validator";
+import { AcademicSemester } from "../academicSemester/academicSemester.model";
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -231,7 +232,14 @@ studentSchema.statics.isUserExists = async function (id: string) {
     return existingUser;
 }
 
-
+studentSchema.pre('save',async function (next){
+  const isAcademicSemesterExists = await AcademicSemester.findById(this.admissionSemester);
+  // console.log(isAcademicSemesterExists);
+  if(!isAcademicSemesterExists || isAcademicSemesterExists.isDeleted){
+    throw new Error('Academic semester does not exists');
+  }
+  next();
+})
 
 
 studentSchema.pre('find', function(next){
