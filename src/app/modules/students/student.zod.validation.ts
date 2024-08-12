@@ -43,7 +43,8 @@ const localGuardianValidationSchema = z.object({
 // Student schema
 const createStudentValidationSchema = z.object({
   body: z.object({
-    id: z.string(),
+    student: z.object({
+      id: z.string(),
     name: userNameValidationSchema,
     gender: z.enum(["male", "female", "others"], { message: "{VALUE} is invalid, Gender must be one of the following 'male', 'female', 'others'" }),
     dateOfBirth: z.string().optional(),
@@ -58,8 +59,10 @@ const createStudentValidationSchema = z.object({
     gurdian: guardianValidationSchema,
     localGuardian: localGuardianValidationSchema,
     profileImg: z.string().optional(),
+    admissionSemester: z.string(),
     academicDepartment: z.string(),
     isDeleted: z.boolean().optional().default(false)
+    })
   })
 });
 

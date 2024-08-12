@@ -32,6 +32,7 @@ export type TStudent = {
   contactNo: string;
   emergencyContactNo: string;
   bloodGroup?: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+  admissionSemester: Types.ObjectId;
   presentAddress: string;
   permanentAddress: string;
   gurdian: TGardian;
