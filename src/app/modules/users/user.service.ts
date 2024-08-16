@@ -23,6 +23,8 @@ const createStudentIntoDB = async (password: string , studentData: TStudent) => 
     // set the student id
     // userData.id = "203010001";
 
+   
+
     // find academic semester information
     const admissionSemester = await AcademicSemester.findById(studentData.admissionSemester);
     // Ensure admission semester can not NULL
@@ -30,9 +32,9 @@ const createStudentIntoDB = async (password: string , studentData: TStudent) => 
       throw new Error("Admission semester cannot be NULL");
     }
 
-    // create student id by the generated Id from the system
-    userData.id = await generateStudentId(admissionSemester)
     
+     // create student id by the generated Id from the system
+     userData.id = await generateStudentId(admissionSemester)
 
 //   if (await Student.isUserExists(studentData.id)) {
 //     throw new Error("Student is already exists");
