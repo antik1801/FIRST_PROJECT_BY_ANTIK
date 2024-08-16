@@ -1,9 +1,11 @@
 import config from "../../config";
+import { AcademicSemester } from "../academicSemester/academicSemester.model";
 import { TStudent } from "../students/student.interface";
 import { Student } from "../students/student.model";
 import { TUser } from "./user.interface";
 // import { Student } from "../students/student.model";
 import { User } from "./user.model";
+import { generateStudentId } from "./user.utils";
 
 const createStudentIntoDB = async (password: string , studentData: TStudent) => {
 
@@ -19,7 +21,18 @@ const createStudentIntoDB = async (password: string , studentData: TStudent) => 
     userData.role = "student";
 
     // set the student id
-    userData.id = "203010001";
+    // userData.id = "203010001";
+
+    // find academic semester information
+    const admissionSemester = await AcademicSemester.findById(studentData.admissionSemester);
+    // Ensure admission semester can not NULL
+    if(!admissionSemester) {
+      throw new Error("Admission semester cannot be NULL");
+    }
+
+    // create student id by the generated Id from the system
+    userData.id = await generateStudentId(admissionSemester)
+    
 
 //   if (await Student.isUserExists(studentData.id)) {
 //     throw new Error("Student is already exists");
