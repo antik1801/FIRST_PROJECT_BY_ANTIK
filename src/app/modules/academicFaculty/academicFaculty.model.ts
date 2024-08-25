@@ -6,10 +6,27 @@ const academicFacultySchema = new Schema<TAcademicFaculty>({
         type: String,
         required: true,
         unique: true
+    },
+    isDeleted:{
+        type: Boolean,
+        default: false
     }
 },
 {
     timestamps: true
 })
+
+academicFacultySchema.pre('find', function(next){
+    // console.log(this);
+    this.find({isDeleted: {$ne: true}});
+    next();
+  })
+  
+academicFacultySchema.pre('findOne', function(next){
+    // console.log(this);
+    this.find({isDeleted: {$ne: true}});
+    next();
+  })
+
 
 export const AcademicFaculty = model<TAcademicFaculty>("Academic Faculty", academicFacultySchema);

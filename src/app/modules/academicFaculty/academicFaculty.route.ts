@@ -8,7 +8,7 @@ router.post("/create-academic-faculty", validateRequest(academicFacultyValidatio
 router.get("/", academicFacultyController.getAllAcademicFaculty);
 router.get("/:facultyId", academicFacultyController.getSingleAcademicFaculty);
 router.patch("/:facultyId", validateRequest(academicFacultyValidation.updateAcademicFacultyValidationSchema), academicFacultyController.updateAcademicFaculty);
-router.delete("/:facultyId");
+router.delete("/:facultyId", academicFacultyController.deleteAcademicFaculty);
 
 
 export const academicFacultyRoutes = router;

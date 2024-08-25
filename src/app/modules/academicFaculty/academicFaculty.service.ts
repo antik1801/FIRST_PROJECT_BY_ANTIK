@@ -24,9 +24,17 @@ const getSingleAcademicFacultyFromDB = async (id: string) =>{
     return result;
 }
 
+const deleteAcademicFacultyFromDB = async (id: string) =>{
+    const result = await AcademicFaculty.findByIdAndUpdate(id, {
+        isDeleted: true
+    })
+    return result;
+}
+
 export const academicFacultyServices = {
     createAcademicFacultyIntoDB,
     updateAcademicFacultyIntoDB,
     getAllAcademicFacultyFromDB,
-    getSingleAcademicFacultyFromDB
+    getSingleAcademicFacultyFromDB,
+    deleteAcademicFacultyFromDB
 }
