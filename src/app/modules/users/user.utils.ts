@@ -17,7 +17,7 @@ const findLastStudentId = async() =>{
         }
     ).lean();
 
-    return lastStudent?.id ? lastStudent?.id : undefined;
+    return lastStudent?.id ? lastStudent.id : undefined;
 }
 
 export const generateStudentId = async (payload: TAcademicSemester) =>{
@@ -32,7 +32,7 @@ export const generateStudentId = async (payload: TAcademicSemester) =>{
     {
         currentId = lastStudentId.substring(6);
     }
-    let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
+    let incrementId = (Number(currentId) + 1).toString().padStart(4, "0");
 
     incrementId = `${payload.year}${payload.code}${incrementId}`;
     return incrementId;

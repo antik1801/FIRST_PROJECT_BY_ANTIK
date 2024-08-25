@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import config from "../../config";
 import { AcademicSemester } from "../academicSemester/academicSemester.model";
 import { TStudent } from "../students/student.interface";
@@ -7,7 +8,7 @@ import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { generateStudentId } from "./user.utils";
 
-const createStudentIntoDB = async (password: string , studentData: TStudent) => {
+const createStudentIntoDB = async (password: string , payload: TStudent) => {
 
     // we have to create a user object
 
@@ -15,7 +16,7 @@ const createStudentIntoDB = async (password: string , studentData: TStudent) => 
     const userData : Partial<TUser>  = {};
 
     // inside user object we have to check whether password is given or not
-    userData.password = password || config.default_password as string;
+    userData.password = password || (config.default_password as string);
 
     // we have to set the role of the user --> student
     userData.role = "student";
@@ -26,35 +27,40 @@ const createStudentIntoDB = async (password: string , studentData: TStudent) => 
    
 
     // find academic semester information
-    const admissionSemester = await AcademicSemester.findById(studentData.admissionSemester);
+    const admissionSemester = await AcademicSemester.findById(payload.admissionSemester);
     // Ensure admission semester can not NULL
     if(!admissionSemester) {
       throw new Error("Admission semester cannot be NULL");
     }
 
-    
-     // create student id by the generated Id from the system
-     userData.id = await generateStudentId(admissionSemester)
+    const session = await mongoose.startSession();
 
-//   if (await Student.isUserExists(studentData.id)) {
-//     throw new Error("Student is already exists");
-//   }
-  const newUser = await User.create(userData);
+   try {
+      session.startTransaction();
+      userData.id = await generateStudentId(admissionSemester);
+      const newUser = await User.create([userData], {session});
 
-    // now if the results exists means the user is created successfully 
-    // so we can move on creating a new student
+      if(!newUser.length){
+        throw new Error("Failed to create new student");
+      }
+      payload.id = newUser[0].id;
+      payload.user = newUser[0]._id;
 
-    // if there is length if the object result
-    if(Object.keys(newUser).length)
-    {
-        studentData.id = newUser.id;
-        studentData.user = newUser._id;
+      const newStudent = await Student.create([payload], {session});
+      if(!newStudent.length){
+        throw new Error("Failed to create new student");
+      }
 
-        const result = await Student.create(studentData);
-        return result;
-    }
+      await session.commitTransaction();
+      await session.endSession();
 
-  return newUser;
+      return newStudent;
+   } catch (err) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error('Failed to create student');    
+   }
+
 };
 
 export const userServices = {
