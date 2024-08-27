@@ -66,4 +66,55 @@ const createStudentValidationSchema = z.object({
   })
 });
 
-export default createStudentValidationSchema
+const updateUserNameValidationSchema = z.object({
+  firstName: z.string().min(1).max(20).optional(),
+  middleName: z.string().optional(),
+  lastName: z.string().min(1).max(20).optional(),
+})
+
+const updateGurdianValidationSchema = z.object({
+  fatherName: z.string()
+  .trim()
+  .refine(value => value.charAt(0).toUpperCase() + value.slice(1) === value, { message: "Father name is in capitalized format" }).optional(),
+fatherOccupation: z.string().trim().optional(),
+fatherContactNo: z.string().trim().optional(),
+motherName: z.string()
+  .trim()
+  .refine(value => value.charAt(0).toUpperCase() + value.slice(1) === value, { message: "Mother name is not in a capitalized format" }).optional(),
+motherOccupation: z.string().trim().optional(),
+motherContactNo: z.string().trim().optional()
+})
+
+const updateLocalGuardianValidationSchema = z.object({
+  name: z.string()
+    .trim()
+    .refine(value => value.charAt(0).toUpperCase() + value.slice(1) === value, { message: "Name is not in a capitalized format" }).optional(),
+  occupation: z.string().trim().optional(),
+  contactNo: z.string().trim().optional(),
+  address: z.string().trim().optional()
+});
+
+
+const updateStudentValidationSchema = z.object({
+  body: z.object({
+    student: z.object({
+      name: updateUserNameValidationSchema,
+      gender: z.enum(['male', 'female', 'others']).optional(),
+      dateOfBirth: z.string().optional(),
+      email: z.string().email().optional(),
+      contactNo: z.string().optional(),
+      emergencyContactNo: z.string().optional(),
+      bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], { message: "{VALUE} is invalid. Please provide a valid blood group" }).optional(),
+      presentAddress: z.string().trim().optional(),
+      permanentAddress: z.string().trim().optional(),
+      gurdian: updateGurdianValidationSchema.optional(),
+      localGuardian: updateLocalGuardianValidationSchema.optional(),
+      profileImg: z.string().optional(),
+    admissionSemester: z.string().optional(),
+    academicDepartment: z.string().optional(),
+    isDeleted: z.boolean().optional()
+    })
+  })
+})
+
+export const studentValidationSchema = { createStudentValidationSchema , updateStudentValidationSchema }

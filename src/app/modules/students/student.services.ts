@@ -1,3 +1,4 @@
+import { TStudent } from "./student.interface";
 import { Student } from "./student.model";
 
 
@@ -21,8 +22,14 @@ const getSingleStudentFromDB = async (id: string) =>{
   return result;
 }
 
+const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) =>{
+  const result = await Student.findOneAndUpdate({_id: id}, payload);
+  return result;
+}
+
 export const StudentServices = {
   getAllStudentsFromDB,
   deleteStudentFromDB,
-  getSingleStudentFromDB
+  getSingleStudentFromDB,
+  updateStudentIntoDB
 };
