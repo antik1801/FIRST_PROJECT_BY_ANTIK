@@ -194,8 +194,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   },
   admissionSemester: {
     type: Schema.Types.ObjectId,
-    required: [true, 'Admission semester is required'],
-    unique: true,
     ref: 'AcademicSemester'
   },
   isDeleted: {
@@ -268,4 +266,4 @@ studentSchema.pre('aggregate', function(next){
   next();
 })
 
-export const Student = model<TStudent, StudentModel>("Student", studentSchema);
+export const Student = model<TStudent, StudentModel>("Students", studentSchema);

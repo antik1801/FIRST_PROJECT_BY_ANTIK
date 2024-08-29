@@ -66,4 +66,4 @@ academicSemesterSchema.pre('findOne', function(next){
   })
   
 
-export const AcademicSemester =  model<TAcademicSemester>('Academic-Semester', academicSemesterSchema);
+export const AcademicSemester =  model<TAcademicSemester>('AcademicSemester', academicSemesterSchema);
