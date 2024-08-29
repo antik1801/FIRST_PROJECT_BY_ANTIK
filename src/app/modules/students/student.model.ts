@@ -11,6 +11,9 @@ import {
 } from "./student.interface";
 import validator from "validator";
 import { AcademicSemester } from "../academicSemester/academicSemester.model";
+import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -189,8 +192,8 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   },
   profileImg: { type: String },
   academicDepartment:{
-    type: String,
-    required: [true, 'Academic department name is required']
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicDepartment',
   },
   admissionSemester: {
     type: Schema.Types.ObjectId,
@@ -238,7 +241,14 @@ studentSchema.pre('save',async function (next){
   }
   next();
 })
-
+studentSchema.pre('save', async function(next){
+  const isAcademicDepartmentExists = await AcademicDepartment.findById(this.academicDepartment);
+  if(isAcademicDepartmentExists)
+  {
+    throw new AppError(httpStatus.NOT_FOUND, "This Academic department does not found in the Database");
+  }
+  next();
+})
 
 studentSchema.pre('find', function(next){
   // console.log(this);

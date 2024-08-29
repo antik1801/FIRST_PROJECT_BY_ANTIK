@@ -7,6 +7,9 @@ import { TUser } from "./user.interface";
 // import { Student } from "../students/student.model";
 import { User } from "./user.model";
 import { generateStudentId } from "./user.utils";
+import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 const createStudentIntoDB = async (password: string , payload: TStudent) => {
 
@@ -30,9 +33,13 @@ const createStudentIntoDB = async (password: string , payload: TStudent) => {
     const admissionSemester = await AcademicSemester.findById(payload.admissionSemester);
     // Ensure admission semester can not NULL
     if(!admissionSemester) {
-      throw new Error("Admission semester cannot be NULL");
+      throw new Error("Admission semester not found in database or the value is NULL");
     }
-
+    const academicDepartment = await AcademicDepartment.findById(payload.academicDepartment);
+    if(!academicDepartment)
+    {
+      throw new AppError(httpStatus.NOT_FOUND, "This academic department does not exists in DATABASE");
+    }
     const session = await mongoose.startSession();
 
    try {

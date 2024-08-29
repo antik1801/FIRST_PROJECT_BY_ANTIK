@@ -1,5 +1,8 @@
 import { model, Schema } from "mongoose";
 import { TAcademicDepartment } from "./academicDepartment.interface";
+import { AcademicFaculty } from "../academicFaculty/academicFaculty.model";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 
 
@@ -27,6 +30,15 @@ academicDepartmentSchema.pre("save", async function (next){
     if(isDepartmentExists)
     {
         throw new Error(`${this.name} already exists`);
+    }
+    next();
+})
+
+academicDepartmentSchema.pre("save", async function(next){
+    const isAcademicFacultyExists = await AcademicFaculty.findById(this.academicFaculty);
+    if(!isAcademicFacultyExists)
+    {
+        throw new AppError(httpStatus.NOT_FOUND, "This Academic faculty is not exists in database");
     }
     next();
 })
