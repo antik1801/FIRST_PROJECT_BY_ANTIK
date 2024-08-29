@@ -46,16 +46,17 @@ const createStudentIntoDB = async (password: string , payload: TStudent) => {
       session.startTransaction();
       userData.id = await generateStudentId(admissionSemester);
       const newUser = await User.create([userData], {session});
-
+      
       if(!newUser.length){
-        throw new Error("Failed to create new student");
+        throw new Error("New User can not be null");
       }
       payload.id = newUser[0].id;
       payload.user = newUser[0]._id;
-
+      console.log({newUser});
       const newStudent = await Student.create([payload], {session});
+      console.log({newStudent});
       if(!newStudent.length){
-        throw new Error("Failed to create new student");
+        throw new Error("New Student cant not be null");
       }
 
       await session.commitTransaction();

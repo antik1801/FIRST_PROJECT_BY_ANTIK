@@ -16,7 +16,7 @@ const updateAcademicDepartmentIntoDB = async (id: string, payload: Partial<TAcad
 }
 
 const getAllAcademicDepartmentFromDB = async () =>{
-    const result = await AcademicDepartment.find();
+    const result = await AcademicDepartment.find().populate('academicFaculty');
     return result;
 }
 

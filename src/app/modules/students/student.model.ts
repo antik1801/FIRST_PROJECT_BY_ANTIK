@@ -241,14 +241,14 @@ studentSchema.pre('save',async function (next){
   }
   next();
 })
-studentSchema.pre('save', async function(next){
-  const isAcademicDepartmentExists = await AcademicDepartment.findById(this.academicDepartment);
-  if(isAcademicDepartmentExists)
-  {
-    throw new AppError(httpStatus.NOT_FOUND, "This Academic department does not found in the Database");
-  }
-  next();
-})
+// studentSchema.pre('save', async function(next){
+//   const isAcademicDepartmentExists = await AcademicDepartment.findById(this.academicDepartment);
+//   if(isAcademicDepartmentExists)
+//   {
+//     throw new AppError(httpStatus.NOT_FOUND, "This Academic department does not found in the Database");
+//   }
+//   next();
+// })
 
 studentSchema.pre('find', function(next){
   // console.log(this);
@@ -276,4 +276,4 @@ studentSchema.pre('aggregate', function(next){
   next();
 })
 
-export const Student = model<TStudent, StudentModel>("Students", studentSchema);
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);
