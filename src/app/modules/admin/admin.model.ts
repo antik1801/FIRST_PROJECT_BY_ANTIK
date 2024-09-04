@@ -19,7 +19,7 @@ const userNameSchema = new Schema<TUserName>({
 
 const adminSchema = new Schema<TAdmin>({
     id:{
-        type: Schema.Types.ObjectId,
+        type: String,
         required: [true, "ID is required"]
     },
     user: {
