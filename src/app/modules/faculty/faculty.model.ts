@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TFaculty, TName } from "./faculty.interface";
 import { BloodGroup, Gender } from "./faculty.constant";
 
@@ -21,12 +21,12 @@ const facultySchema = new Schema<TFaculty>(
     {
         id: {
             type: String,
-            required: [true, "Faculty Id is required"],
-            unique: true
+            required: [true, "Faculty Id is required"],  // System generated
+            unique: true 
         },
         user:{
             type: Schema.Types.ObjectId,
-            required: [true, "user (objectid) is required"],
+            required: [true, "user (objectid) is required"], // System generated
             unique: true,
             ref: 'User'
         },
@@ -65,11 +65,6 @@ const facultySchema = new Schema<TFaculty>(
             ref: "AcademicDepartment",
             required: [true, "AcademicDepartment is required"]
         },
-        academicFaculty: {
-            type: Schema.Types.ObjectId,
-            ref: "AcademicFaculty",
-            required: [true, "AcademicFaculty is required"]
-        },
         contactNo:{
             type: String,
             required: [true, "ContactNo is required"]
@@ -78,6 +73,28 @@ const facultySchema = new Schema<TFaculty>(
             type: String,
             required: [true, "EmergencyContactNo is required"]
         },
-        
+        permanentAddress:{
+            type: String,
+            required: [true, "PermanentAddress is required"]
+        },
+        profileImg:{
+            type: String,
+        },
+        presentAddress: {
+            type: String,
+            required: [true, "PresentAddress is required"]
+        },
+        isDeleted: {
+            type: Boolean,
+            default: false
+        }
+    },
+    {
+        toJSON: {
+            virtuals: true
+        }
     }
 )
+
+
+export const Faculty = model<TFaculty>('Faculty', facultySchema);
