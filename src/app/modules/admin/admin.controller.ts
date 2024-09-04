@@ -18,6 +18,32 @@ const getAllAdmins = catchAsync(async (req:Request, res:Response)=>{
 })
 
 
+const getSingleAdmin = catchAsync(async (req: Request, res:Response) =>{
+    const {adminId} = req.params;
+    const result = await adminServices.getSingleAdminFromDB(adminId);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Single admin fetched successfully",
+        data: result
+    })
+})
+
+const deleteSingleAdmin = catchAsync(async (req:Request, res:Response) =>{
+    const {adminId} = req.params;
+    const result = await adminServices.deleteSingleAdminFromDB(adminId);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Single admin deleted successfully",
+        data: result
+    })
+})
+
 export const adminControllers = {
-    getAllAdmins
+    getAllAdmins,
+    getSingleAdmin,
+    deleteSingleAdmin
 }

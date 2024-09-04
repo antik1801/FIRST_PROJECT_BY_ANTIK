@@ -20,8 +20,20 @@ const getAllAdminsFromDB = async (query: Record<string , unknown>) =>{
     return result;
 }
 
+const getSingleAdminFromDB = async(id: string) =>{
+    const result = await Admin.findById(id);
+    return result;
+}
 
+const deleteSingleAdminFromDB = async(id: string) =>{
+    const result = await Admin.findByIdAndUpdate(id, {isDeleted: true}, {
+        new: true,
+    })
+    return result;
+}
 
 export const adminServices = {
-    getAllAdminsFromDB
+    getAllAdminsFromDB,
+    getSingleAdminFromDB,
+    deleteSingleAdminFromDB
 }
