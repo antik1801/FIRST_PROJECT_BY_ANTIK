@@ -7,7 +7,7 @@ import { Admin } from "./admin.model"
 
 const getAllAdminsFromDB = async (query: Record<string , unknown>) =>{
     const adminQuery = new QueryBuilder(
-        Admin.find()
+        Admin.find().populate('user')
         ,
         query
     ).search(AdminSearchableFields)
@@ -21,7 +21,7 @@ const getAllAdminsFromDB = async (query: Record<string , unknown>) =>{
 }
 
 const getSingleAdminFromDB = async(id: string) =>{
-    const result = await Admin.findById(id);
+    const result = await Admin.findOne({_id: id});
     return result;
 }
 
