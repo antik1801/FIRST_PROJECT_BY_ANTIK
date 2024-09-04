@@ -96,5 +96,44 @@ const facultySchema = new Schema<TFaculty>(
     }
 )
 
+facultySchema.virtual('fullName').get(function(){
+    return(
+      `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
+    )
+  })
+  
+
+facultySchema.post('find', async function (docs,next){
+    if (docs && docs.length > 0 && docs[0].user) {
+        docs[0].user.password = '';
+    }
+    next();
+})
+facultySchema.post('findOne', async function (docs,next){
+    if (docs && docs.length > 0 && docs[0].user) {
+        docs[0].user.password = '';
+    }
+
+    next();
+})
+
+facultySchema.pre('find', function(next){
+    // console.log(this);
+    this.find({isDeleted: {$ne: true}});
+    next();
+})
+
+facultySchema.pre('findOne', function(next){
+    // console.log(this);
+    console.log(this);
+    this.find({isDeleted: {$ne: true}});
+    next();
+})
+
+facultySchema.pre('aggregate', function(next){
+    // console.log(this);
+    this.pipeline().unshift({$match: { isDeleted: {$ne: true} }})
+    next();
+})
 
 export const Faculty = model<TFaculty>('Faculty', facultySchema);

@@ -21,6 +21,18 @@ const createStudent = catchAsync(async (req: Request, res: Response) =>{
 })
  
 
+const createFaculty = catchAsync(async (req:Request, res: Response)=>{
+    const {password, faculty: facultyData} = req.body;
+    const result = await userServices.createFacultyIntoDB(password, facultyData);
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Faculty is created successfully",
+        data: result
+    })
+})
+
 export const userControllers = {
-    createStudent
+    createStudent,
+    createFaculty
 }

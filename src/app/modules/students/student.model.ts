@@ -232,6 +232,10 @@ studentSchema.statics.isUserExists = async function (id: string) {
     const existingUser = await Student.findOne({id});
     return existingUser;
 }
+studentSchema.post('find', async function (docs,next){
+  docs[0].user.password= '';
+  next();
+})
 
 studentSchema.pre('save',async function (next){
   const isAcademicSemesterExists = await AcademicSemester.findById(this.admissionSemester);
