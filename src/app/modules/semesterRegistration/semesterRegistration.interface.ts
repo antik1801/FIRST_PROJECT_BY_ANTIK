@@ -5,8 +5,8 @@ export type TStatus = 'UPCOMING' | 'ONGOING' | 'ENDED'
 export type TSemesterRegistration = {
     academicSemester: Types.ObjectId;
     status: TStatus;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     minCredit: number;
     maxCredit: number;
 }

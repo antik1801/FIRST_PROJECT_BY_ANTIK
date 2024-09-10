@@ -1,41 +1,58 @@
 import { model, Schema } from "mongoose";
 import { TSemesterRegistration } from "./semesterRegistration.interface";
-import { Status } from "./semesterRegistration.constant";
+import { SemesterRegistrationStatus } from "./semesterRegistration.constant";
+import { AcademicSemester } from "../academicSemester/academicSemester.model";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 
-const semesterRegistrationSchema = new Schema<TSemesterRegistration>({
+const semesterRegistrationSchema = new Schema<TSemesterRegistration>(
+  {
     academicSemester: {
-        type: Schema.Types.ObjectId,
-        ref: "AcademicSemester",
-        required: [true, "academicSemester is required"]
+      type: Schema.Types.ObjectId,
+      ref: "AcademicSemester",
+      required: [true, "academicSemester is required"],
     },
-    status:{
-        type: String,
-        enum: {
-            values: Status,
-            message: "{VALUE} is not a valid status"
-        },
+    status: {
+      type: String,
+      enum: {
+        values: SemesterRegistrationStatus,
+        message: "{VALUE} is not a valid status",
+      },
     },
     startDate: {
-        type: Date,
-        required: [true, "startDate is required"]
+      type: String,
+      required: [true, "startDate is required"],
     },
     endDate: {
-        type: Date,
-        required: [true, "endDate is required"]
+      type: String,
+      required: [true, "endDate is required"],
     },
     minCredit: {
-        type: Number,
-        required: [true, "minCredit is required"]
+      type: Number,
+      required: [true, "minCredit is required"],
     },
-    maxCredit:{
-        type: Number,
-        required: [true, "maxCredit is required"]
-    }
-},
-{
-    timestamps: true
+    maxCredit: {
+      type: Number,
+      required: [true, "maxCredit is required"],
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+semesterRegistrationSchema.pre('save', async function (next){
+  const isAcademicSemesterExists = await AcademicSemester.findById(this.academicSemester);
+  if(!isAcademicSemesterExists)
+  {
+    throw new AppError(httpStatus.NOT_FOUND, "academicSemester doesnot exists")
+  }
+  next();
 })
 
 
-export const SemesterRegistration = model<TSemesterRegistration>('SemesterRegistration', semesterRegistrationSchema);
+export const SemesterRegistration = model<TSemesterRegistration>(
+  "SemesterRegistration",
+  semesterRegistrationSchema
+);
