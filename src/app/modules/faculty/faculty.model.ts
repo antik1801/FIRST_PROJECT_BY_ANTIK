@@ -2,6 +2,7 @@ import { model, Schema } from "mongoose";
 import { TFaculty, TName } from "./faculty.interface";
 import { BloodGroup, Gender } from "./faculty.constant";
 
+
 const userNameSchema = new Schema <TName>({
     firstName: {
         type: String,
@@ -135,5 +136,7 @@ facultySchema.pre('aggregate', function(next){
     this.pipeline().unshift({$match: { isDeleted: {$ne: true} }})
     next();
 })
+
+
 
 export const Faculty = model<TFaculty>('Faculty', facultySchema);
